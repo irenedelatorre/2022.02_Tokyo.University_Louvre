@@ -49,7 +49,8 @@ create_new_user_track <- function(data, f8) {
 final_format_f10 <- function(data, name) {
   data <- data %>%
     drop_na(id_ap_3) %>%
-    select(user_id, id_ap_3, date, start, end, weekday)
+    filter(!is.null(user_id)) %>%
+    select(user_id, id_ap_3, date, start, end)
   
   write.csv(
     data,
