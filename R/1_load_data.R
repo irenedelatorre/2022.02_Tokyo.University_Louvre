@@ -26,7 +26,8 @@ f3_WiFi_rename_miyajima_200528fin <- read_excel(
     )
   ) %>%
   rename(id_ap_1 = "No.") %>%
-  select(c(id_ap_1, memo, mac))
+  select(c(id_ap_1, memo, mac)) %>%
+  drop_na(id_ap_1)
 
 f4_WIFI_LOUVRE_TRUE <- read_excel(
   paste0(source, "Rooms.Access.Points/WIFI_LOUVRE_TRUE.xlsx")
@@ -49,17 +50,3 @@ f5A_Louvre_MIT_1_2017_12 <- read_csv(
 f5A_Louvre_MIT_1_2018 <- read_csv(
   paste0(source,"Users.Locations/Louvre_MIT(1-2018)_v3.csv"))
 
-f5_Louvre_MIT <- rbind(
-  f5A_Louvre_MIT_1_2018,
-  f5A_Louvre_MIT_1_2017_11,
-  f5A_Louvre_MIT_1_2017_12) %>%
-  rename(
-    user_id = ID,
-    id_ap_2 = ACCESS_POINT_HOSTNAME,
-    ip_address = ACCESS_POINT_IP_ADDRESS,
-    date = DATE,
-    start = TIME_DEB,
-    end = TIME_END,
-    duration = TIME_DUR,
-    weekday = WEEKDAY
-  )
