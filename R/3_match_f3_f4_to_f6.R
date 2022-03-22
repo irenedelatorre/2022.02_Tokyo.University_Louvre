@@ -23,7 +23,6 @@ find_f3_in_f4 <- function(f3, f4) {
   
   # file where we're going to look up for the data - f4
   look_up_f <- f4
-  limit <- 200
   
   # loop through the items
   for (i in 1:nrow(f6)) {
@@ -40,20 +39,23 @@ find_f3_in_f4 <- function(f3, f4) {
         filter(lower_bound <= item_mac_hex, item_mac_hex <= upper_bound)
       
       # THIRD MATCH - by distance to mac range
-      if(nrow(this_filtered) > 1) {
-        
-        # calculate minimum distance
-        this_filtered_dist <- this_filtered %>%
-          mutate(
-            distance_l = item_mac_hex - lower_bound,
-            distance_u = upper_bound - item_mac_hex
-          ) %>%
-          mutate(distance = abs(item_mac_hex - mac_hex) ) %>%
-          arrange(distance)
-        
-        this_filtered <- this_filtered_dist[1, ]
-        
-      }
+      # currently none
+      # if(nrow(this_filtered) > 1) {
+      #   
+      #   message("more than 1")
+      #   
+      #   # calculate minimum distance
+      #   this_filtered_dist <- this_filtered %>%
+      #     mutate(
+      #       distance_l = item_mac_hex - lower_bound,
+      #       distance_u = upper_bound - item_mac_hex
+      #     ) %>%
+      #     mutate(distance = abs(item_mac_hex - mac_hex) ) %>%
+      #     arrange(distance)
+      #   
+      #   this_filtered <- this_filtered_dist[1, ]
+      #   
+      # }
     }
     
     if (nrow(this_filtered) == 1) {
@@ -147,17 +149,23 @@ create_f6 <- function(f3, f4) {
   f4 <- f4 %>%
     mutate(new_radio = mac_radio) %>%
     separate(new_radio, c("mac", "radio"), "-") %>%
+    mutate(mac_split = mac) %>%
+    # separate macs (into 6)
+    separate(mac_split, c("m1", "m2", "m3", "m_4a", "m_5a", "m_6a")) %>%
+    # include them in new mac with range
+    mutate(radio_full = paste0(m1, ":", m2, ":", m3, ":", radio)) %>%
     mutate(
       mac_hex = as.numeric(
         as.character(paste0("0x", gsub(':', '', mac))),
         options(digits = 22)),
       radio_hex = as.numeric(
-        as.character(paste0("0x", gsub(':', '', radio))),
+        as.character(paste0("0x", gsub(':', '', radio_full))),
         options(digits = 22)
       ),
-      upper_bound = mac_hex + radio_hex,
-      lower_bound = mac_hex - radio_hex
-    )
+      lower_bound = mac_hex,
+      upper_bound = radio_hex
+    ) %>%
+    select(!c("m1", "m2", "m3", "m_4a", "m_5a", "m_6a"))
   
   f6 <- find_f3_in_f4(f3, f4)
   

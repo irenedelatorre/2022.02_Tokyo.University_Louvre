@@ -10,7 +10,7 @@
 #'
 #' @examples
 
-create_new_user_track <- function(data, f8) {
+create_new_user_track <- function(data, f8, f11) {
   id_room <- f8 %>%
     select(c(id_ap_2, id_ap_3))
   
@@ -24,16 +24,28 @@ create_new_user_track <- function(data, f8) {
       end = TIME_END,
       duration = TIME_DUR,
       weekday = WEEKDAY
-    )
+    ) %>%
+    mutate(id_ap_2 = case_when(
+      id_ap_2 == "AP002-H-RC" ~ "AP002",
+      id_ap_2 == "AP003-H-RC" ~ "AP003",
+      TRUE ~ id_ap_2
+    ))
   
-  data <- merge(
+  data_1 <- merge(
     data, 
-    id_room, 
+    f11, 
+    by = "user_id",
+    all = F
+  )
+
+  data_2 <- merge(
+    data_1,
+    id_room,
     by = "id_ap_2",
     all = T
   )
   
-  data
+  data_2
 }   
 
 #' final_format_f10
@@ -50,7 +62,7 @@ final_format_f10 <- function(data, name) {
   data <- data %>%
     drop_na(id_ap_3) %>%
     filter(!is.null(user_id)) %>%
-    select(user_id, id_ap_3, date, start, end)
+    select(id, id_ap_3, date, start, end)
   
   write.csv(
     data,

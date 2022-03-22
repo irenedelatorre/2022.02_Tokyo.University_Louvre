@@ -89,9 +89,7 @@ summary_f8 <- function(f8) {
       f8_total,
       " access points matched (",
       round(100 * (nrow(f8_rooms_ap_ids_matched)) / f8_total),
-      "%). ",
-      nrow(f8_total) - nrow(f8_rooms_ap_ids_matched),
-      " lost."
+      "%). "
     )
   )
 }
