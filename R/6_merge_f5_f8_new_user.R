@@ -9,10 +9,18 @@
 #' @export
 #'
 #' @examples
+#' test <- f5A_Louvre_MIT_1_2017_11 %>%
+#'   arrange(ID)
+#'
+#' data <- head(test, 5000)
+#'
+#' f8 <- f8_ap_matched_rooms
+#' f11 <- f11_new_user_ids
 
 create_new_user_track <- function(data, f8, f11) {
   id_room <- f8 %>%
-    select(c(id_ap_2, id_ap_3))
+    select(c(id_ap_2, id_ap_3)) %>%
+    distinct()
   
   data <- data %>%
     rename(
