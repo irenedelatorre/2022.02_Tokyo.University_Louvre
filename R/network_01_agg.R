@@ -52,7 +52,7 @@ create_agg_network <- function(data, date) {
       duration_secs = as.numeric(difftime(end_t, start_t))
     )
   
-  # 1 - by user id, check beginnings and ends
+  # 1 - by movement, check beginnings and ends
   group_movements <- data_agg %>%
     group_by(movement) %>%
     summarise(
@@ -62,4 +62,51 @@ create_agg_network <- function(data, date) {
       median = round(median(duration_secs))
     ) %>%
     separate(movement, c("source", "target"))
+}
+
+#' create_agg_nodes
+#' Summarizes all room information, and calculates how many people were in a
+#' specific room, for how long (as total duration, mean and median in seconds)
+#' It doesn't remove duplicates of people doing the same movement more than
+#' once.
+#'
+#' @param data user data frame (final f10)
+#'
+#' @return data frame with source rooms, total people, mean duration, 
+#' median duration and total duration. Time in seconds
+#' 
+#' @import "dplyr"
+#' 
+#' @export
+#'
+#' @examples
+#' 
+#' f10_Louvre_2017_11 <- read_csv("output/f10_Louvre_MIT_1_2017_11.csv")
+#'  nodes_2017_11 <- crate_agg_nodes(f10_Louvre_2017_11)
+
+create_agg_nodes <- function(data, date) {
+  # 1 sort by user id and then by date and time
+  # create new start date 
+  # create new end date to calculate duration in seconds
+  # calculate duration in sec
+  nodes_agg <- data %>%
+    drop_na() %>%
+    mutate(
+      start_t = as.POSIXlt(paste0(date, " ", start)),
+      end_t = as.POSIXlt(paste0(date, " ", end))
+    ) %>%
+    # duration in a specific wifi point
+    mutate(
+      duration_secs = as.numeric(difftime(end_t, start_t))
+    )
+  
+  # 1 - by room check beginnings and ends
+  nodes <- nodes_agg %>%
+    group_by(id_ap_3) %>%
+    summarise(
+      n_total = n(),
+      total_duration_sec = sum(duration_secs),
+      mean = round(mean(duration_secs)),
+      median = round(median(duration_secs))
+    )
 }

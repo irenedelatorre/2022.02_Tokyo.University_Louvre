@@ -6,6 +6,7 @@
 #' @param f5_b second data file from the users
 #' @param f5_c third data file from the users
 #' @param f6 is the data frame created from matching f3 and f4
+#' @param f12 is the data frame with the matched room names and room ids
 #'
 #' @return a data frame with new ids for the rooms, that can be used both
 #'   in f6 and f5
@@ -13,7 +14,7 @@
 #'
 #' @examples
 #' 
-create_f8 <- function(f5_a, f5_b, f5_c, f6) {
+create_f8 <- function(f5_a, f5_b, f5_c, f6, f12) {
   f5_Louvre_MIT <- rbind(
     f5_a,
     f5_b,
@@ -55,10 +56,22 @@ create_f8 <- function(f5_a, f5_b, f5_c, f6) {
     by = "id_ap_1"
   )
   
+
   f8_rooms_ap_ids <- f8_rooms_ap_ids %>%
     select(!c("...1")) %>%
     drop_na(id_ap_1) %>%
     drop_na(id_ap_2)
+  
+  f8_rooms_ids_names <- merge(
+    f8_rooms_ap_ids,
+    f12,
+    by.x = "Room_Number",
+    by.y = "Room_id"
+  )
+
+  f8_rooms_ids_names <- f8_rooms_ids_names %>%
+    select(!c("floor"))
+  
 }
 
 

@@ -1,6 +1,7 @@
 library(readr)
 library(readxl)
 library(dplyr)
+library(tidyr)
 
 source <- "../network_data/"
 
@@ -38,6 +39,11 @@ f4_WIFI_LOUVRE_TRUE <- read_excel(
     mac_radio = "range MAC Radio", 
     location = "Emplacement") %>%
   select(c(id_ap_2, mac_eth, mac_radio, location))
+
+
+f12_room_names_ids <- read_excel(
+  paste0(source, "Rooms - museo and ids.xlsx")
+)
 
 # user data --------------------------------------------------------------------
 

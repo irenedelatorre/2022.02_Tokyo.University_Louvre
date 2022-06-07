@@ -37,25 +37,6 @@ find_f3_in_f4 <- function(f3, f4) {
     if (nrow(this_filtered) == 0) {
       this_filtered <- look_up_f %>%
         filter(lower_bound <= item_mac_hex, item_mac_hex <= upper_bound)
-      
-      # THIRD MATCH - by distance to mac range
-      # currently none
-      # if(nrow(this_filtered) > 1) {
-      #   
-      #   message("more than 1")
-      #   
-      #   # calculate minimum distance
-      #   this_filtered_dist <- this_filtered %>%
-      #     mutate(
-      #       distance_l = item_mac_hex - lower_bound,
-      #       distance_u = upper_bound - item_mac_hex
-      #     ) %>%
-      #     mutate(distance = abs(item_mac_hex - mac_hex) ) %>%
-      #     arrange(distance)
-      #   
-      #   this_filtered <- this_filtered_dist[1, ]
-      #   
-      # }
     }
     
     if (nrow(this_filtered) == 1) {
@@ -64,7 +45,24 @@ find_f3_in_f4 <- function(f3, f4) {
     }
   }
   
+  
+  
+  # add floor
+  f6 <- f6 %>%
+    mutate(floor = case_when(
+      grepl("/ N1", location, fixed = TRUE) == TRUE ~ "N1 - Level 1",
+      grepl("/ N2", location, fixed = TRUE) == TRUE ~ "N2 - Level 2",
+      grepl("/ RC", location, fixed = TRUE) == TRUE ~ "RC - Level 0",
+      grepl("/ S1", location, fixed = TRUE) == TRUE ~ "S1 - Level -1",
+      grepl("/ S2", location, fixed = TRUE) == TRUE ~ "S2 - Level -2",
+      grepl("/ Petite Galerie", location, fixed = TRUE) == TRUE ~ "S1 - Level -1",
+      
+      grepl("Pyramide", location, fixed = TRUE) == TRUE ~ "RC - Level 0 **",
+      TRUE ~ "Unknown"
+    ))
+  
   f6
+  
 }
 
 #' summary_f6

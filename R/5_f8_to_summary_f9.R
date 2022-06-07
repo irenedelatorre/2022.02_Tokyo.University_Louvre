@@ -11,9 +11,18 @@
 #' 
 create_f9 <- function(f8) {
   f9 <- f8 %>%
-    select(c(id_ap_3, Room_Number, location))
+    select(c(
+      id_ap_3, Room_Number, Area, Floor, Museum_room,
+      Type, Collection, Highlight
+      )
+    )
   
-  write.csv(f9, file = "output/f9_ap_rooms.csv", row.names = FALSE)
+  write.csv(
+    f9,
+    file = "output/f9_ap_rooms.csv",
+    row.names = FALSE,
+    fileEncoding = "UTF-8"
+    )
   
   f9
 }

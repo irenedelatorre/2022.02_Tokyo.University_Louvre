@@ -19,7 +19,9 @@ f8_ap_matched_rooms <- create_f8(
   f5A_Louvre_MIT_1_2017_11,
   f5A_Louvre_MIT_1_2017_12,
   f5A_Louvre_MIT_1_2018,
-  f6 = f6_id_1_2_matched)
+  f6 = f6_id_1_2_matched,
+  f12 = f12_room_names_ids
+  )
 
 ## f9 = summary of 8 ----------------------------------------------------------
 source("R/5_f8_to_summary_f9.R")

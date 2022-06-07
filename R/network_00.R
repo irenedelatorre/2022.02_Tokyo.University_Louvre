@@ -13,17 +13,35 @@ create_networks <- function(this_source, date) {
   #import file
   data <- read_csv(this_source)
   
+  # creating network and nodes
+  message("Creating network")
   network <- create_agg_network(data) %>%
     mutate("date" = date)
   
+  message("Creating nodes")
+  nodes <- create_agg_nodes(data) %>%
+    mutate("date" = date)
+  
+  # writing files
   write.csv(
     network,
     paste0(
       "output/",
       "network_agg_",
       date,
-      ".csv")
+      ".csv"),
+    row.names = FALSE
     )
+  
+  write.csv(
+    nodes,
+    paste0(
+      "output/",
+      "network_nodes_agg_",
+      date,
+      ".csv"),
+    row.names = FALSE
+  )
   
   message("File saved")
 }
@@ -48,12 +66,26 @@ all_agg_network <- function() {
   network <- create_agg_network(data) %>%
     mutate("date" = "All")
   
+  message("Creating nodes")
+  nodes <- create_agg_nodes(data) %>%
+    mutate("date" = "All")
+  
   write.csv(
     network,
     paste0(
       "output/",
       "network_agg_all",
-      ".csv")
+      ".csv"),
+    row.names = FALSE
+  )
+  
+  write.csv(
+    nodes,
+    paste0(
+      "output/",
+      "network_nodes_agg_all",
+      ".csv"),
+    row.names = FALSE
   )
   
   message("File saved")
