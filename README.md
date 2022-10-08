@@ -5,7 +5,7 @@ Nor the final output.
 
 ## Original Files from Tokyo University and Louvre Museum
 
-iMAGE
+[datasets](img/link_between_datasets.png)
 
 ## R Scripts in this Repository
 
@@ -20,24 +20,31 @@ means a range between 48:c0:93:00:42:28 and 48:c0:93:00:42:37
 - Match f3 with f4: 154 out of 154 access from f3 matched (100%).
 - Match f3 with f4: 83 out of 114 access from f4 matched (73%).
 
-### Match f5 (user data) with f6 (file with id1 and id2) to build a new id (id3) = f8
+### Match f5 with f6 = f8
+
+- f5 (user data)
+- f6 (file with id1 and id2)
+- f8 (new id -id3-)
 
 **Summary**
 
 - Match rooms and ap_ids: 154 out of 176 access points matched (88%).
 - When merging f2 (room numbers), the file increases to 237 rows.
 
-Not all ids match:
+Question: It's interesting that is the same number of ids, 
+so maybe there was a mismatch somewhere?
+
+ids with missmatches:
 
 - From f6: ap110, ap111, ap112, ap113
 - From f5: ap116, ap119, ap124, ap129
 
-Question: It's interesting that is the same number of ids, so maybe there was a mismatch somewhere?
-
 ### Modify users and include new ids
 
 **Summary**
-- Match rooms, ap_ids, and users: 14410328 out of 17198520 movements matched (84%)
+
+- Match rooms, ap_ids, and users: 14410328 out of 17198520 
+  movements matched (84%)
 
 Questions: 
 
