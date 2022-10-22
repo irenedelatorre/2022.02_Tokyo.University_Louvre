@@ -3,7 +3,8 @@ library(readxl)
 library(dplyr)
 library(tidyr)
 
-source <- "../network_data/"
+source <- "network_data/"
+source_users <- "../network_data/"
 
 # Matrix file ------------------------------------------------------------------
 
@@ -48,11 +49,11 @@ f12_room_names_ids <- read_excel(
 # user data --------------------------------------------------------------------
 
 f5A_Louvre_MIT_1_2017_11 <- read_csv(
-  paste0(source,"Users.Locations/Louvre_MIT(11-2017)_v1.csv"))
+  paste0(source_users,"Users.Locations/Louvre_MIT(11-2017)_v1.csv"))
 
 f5A_Louvre_MIT_1_2017_12 <- read_csv(
-  paste0(source,"Users.Locations/Louvre_MIT(12-2017)_v2.csv"))
+  paste0(source_users,"Users.Locations/Louvre_MIT(12-2017)_v2.csv"))
 
 f5A_Louvre_MIT_1_2018 <- read_csv(
-  paste0(source,"Users.Locations/Louvre_MIT(1-2018)_v3.csv"))
+  paste0(source_users,"Users.Locations/Louvre_MIT(1-2018)_v3.csv"))
 
