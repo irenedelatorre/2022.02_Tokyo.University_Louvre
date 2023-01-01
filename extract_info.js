@@ -12,21 +12,18 @@ floors.each(function(d, i) {
 
     // go through the base
     const id_base = i === 0 ? "" : `_${i+1}`;
-    const base = d3.select(`#ground${id_base}`).attr("d");
-    geometry.push({type: "ground", floor: this_floor, d: base});
+    const base = d3.selectAll(`#ground${id_base}`);
+    pushToArray(base, "ground", this_floor); 
 
     // go through the rooms_blueprint 
     const floor = d3.selectAll(`#rooms_blueprint${id_base}`)
-        .selectAll("path")
-        .attr("d");
-    pushToArray(floor, "rooms_blueprint", this_floor);
+        .selectAll("path");
+    pushToArray(floor, "rooms_blueprint", this_floor); 
 
     // go through the stairs 
     const stairs = d3.select(`#stairs${id_base}`)
         .selectAll("path");
-    if (!stairs.empty()) {
-        pushToArray(stairs.attr("d"), "stairs", this_floor);
-    }
+    pushToArray(stairs, "stairs", this_floor); 
 
     // go through the rooms
     const rooms = d3.selectAll(`#rooms${id_base}`)
@@ -46,7 +43,7 @@ floors.each(function(d, i) {
 
 })
 
-const geometry_keys = ["type", "floor", "d"];
+const geometry_keys = ["type", "floor", "d", "fill_rule"];
 const rooms_keys = ["floor", "room", "x", "y"];
 
 d3.select("#download_geom")
@@ -56,11 +53,18 @@ d3.select("#download_rooms")
     .on("click", downloadBlob);
 
 function pushToArray(array, type, floor) {
-    if (array !== "M") {
-        geometry.push({
-            type: type,
-            floor: floor,
-            d: array
+    if (!array.empty()){
+        array.each(function(c, j) {
+            const this_path = d3.select(this).attr("d");
+            const fill_rule = d3.select(this).attr("fill-rule");
+            if (this_path !== "M") {
+                geometry.push({
+                    type: type,
+                    floor: floor,
+                    d: this_path,
+                    fill_rule: fill_rule
+                });
+            }
         });
     }
 }
