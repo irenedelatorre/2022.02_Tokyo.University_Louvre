@@ -2,13 +2,16 @@
 title: "Match geometry with room info"
 author: "Irene de la Torre"
 date: '2023-01-02'
-output: html_document
+output:
+  md_document:
+    variant: markdown_github
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(readr)
 library(dplyr)
+library(tidyr)
 ```
 
 # Match geometry with room information
