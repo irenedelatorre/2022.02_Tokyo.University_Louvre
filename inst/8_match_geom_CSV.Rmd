@@ -1,0 +1,57 @@
+We need to match ids from the geom rooms CSV and the nodes array. To do so `getNodeInfo` uses the indicated parameters to match both: array is the array we need to filter to obtain a specific parameter param is the parameter from array used to match the arrays. roomN is the original room id or room number we need to find in array info is the parameter we want to return from array.
+
+In general, `f9_ap_rooms` uses `id_ap_3` to match rooms. It's the only CSV with information both with the id and the original Museum room number.
+
+`load rooms.csv` --- This CSV was created scraping the SVG with Louvre's blueprint. To modify, check the [blueprints](https://github.com/irenedelatorre/2022.02_Tokyo.University_Louvre/tree/blueprints) branch.
+
+```{r}
+
+library(readr)
+rooms_geom <- read_csv("network_data/Rooms.geom/rooms.csv")
+
+```
+
+We need to match it with `f9_ap_rooms`. To load the file run either:
+
+**Load exported CSV**
+
+```{r}
+library(readr)
+f9_ap_rooms <- read_csv("network_data/Rooms.geom/f9_ap_rooms.csv")
+```
+
+**Produce and export CSV again**
+
+```{r}
+source("R/1_load_data")
+source("R/2_merge_data.R")
+
+## f6 = f3 + f4 ------ merge by mac id ----------------------------------------
+
+source("R/3_match_f3_f4_to_f6.R")
+
+f6_id_1_2_matched <- create_f6(
+  f3 = f3_WiFi_rename_miyajima_200528fin,
+  f4 = f4_WIFI_LOUVRE_TRUE
+  )
+
+
+## f8 = f5 + f6 ------ merge by id_ap_2 ----------------------------------------
+# pick single names of the id_ap_2
+source("R/4_match_f5_f6_to_f8.R")
+
+f8_ap_matched_rooms <- create_f8(
+  f5A_Louvre_MIT_1_2017_11,
+  f5A_Louvre_MIT_1_2017_12,
+  f5A_Louvre_MIT_1_2018,
+  f6 = f6_id_1_2_matched,
+  f12 = f12_room_names_ids
+  )
+
+## f9 = summary of 8 ----------------------------------------------------------
+source("R/5_f8_to_summary_f9.R")
+f9_ap_rooms <- create_f9(f8_ap_matched_rooms)
+
+```
+
+Or use the CSV stored in

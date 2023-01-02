@@ -1,0 +1,242 @@
+---
+title: "Match geometry with room info"
+author: "Irene de la Torre"
+date: '2023-01-02'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(dplyr)
+```
+
+# Match geometry with room information
+
+## Rooms (nodes)
+
+We need to match ids from the geom rooms CSV and the nodes array.
+
+In general, `f9_ap_rooms` uses `id_ap_3` to match rooms. It's the only CSV with information both with the id and the original Museum room number.
+
+`load rooms.csv` --- This CSV was created scraping the SVG with Louvre's blueprint. To modify, check the [blueprints](https://github.com/irenedelatorre/2022.02_Tokyo.University_Louvre/tree/blueprints) branch.
+
+```{r echo=FALSE}
+rooms_geom <- read_csv("../network_data/Rooms.geom/rooms.csv")
+```
+
+We need to match it with `f9_ap_rooms`. To load the file run either:
+
+**Load exported CSV**
+
+```{r echo=FALSE}
+f9_ap_rooms <- read_csv("../network_data/Rooms.geom/f9_ap_rooms.csv")
+```
+
+**Produce and export CSV again**
+
+```{r eval = FALSE}
+source("R/1_load_data")
+source("R/2_merge_data.R")
+
+## f6 = f3 + f4 ------ merge by mac id ----------------------------------------
+
+source("R/3_match_f3_f4_to_f6.R")
+
+f6_id_1_2_matched <- create_f6(
+  f3 = f3_WiFi_rename_miyajima_200528fin,
+  f4 = f4_WIFI_LOUVRE_TRUE
+  )
+
+
+## f8 = f5 + f6 ------ merge by id_ap_2 ----------------------------------------
+# pick single names of the id_ap_2
+source("R/4_match_f5_f6_to_f8.R")
+
+f8_ap_matched_rooms <- create_f8(
+  f5A_Louvre_MIT_1_2017_11,
+  f5A_Louvre_MIT_1_2017_12,
+  f5A_Louvre_MIT_1_2018,
+  f6 = f6_id_1_2_matched,
+  f12 = f12_room_names_ids
+  )
+
+## f9 = summary of 8 ----------------------------------------------------------
+source("R/5_f8_to_summary_f9.R")
+f9_ap_rooms <- create_f9(f8_ap_matched_rooms)
+
+```
+
+### Match data
+
+```{r}
+
+rooms_geom <- rooms_geom %>%
+  rename(Museum_room = room) %>%
+  rename(floor_short = floor)
+
+rooms <- merge(f9_ap_rooms, rooms_geom, by="Museum_room", all=T)
+
+```
+
+`rooms` is a data frame with:
+
+-   Museum_room: real room number in the museum. Eg. 524
+-   id_ap_3: wifi id. Eg 43
+-   Room_number: a room number, not to be mistaken with Museum_room. Eg 138
+-   Area: area of the museum. Eg Richelieu
+-   Floor: floor of the museum. Eg. RC - Level 0
+-   Type: if it's stairs. NA is a normal room
+-   Collection: Decorative Arts
+-   Highlight: a highlighted painting
+-   floor: floor of the museum. Short version. EG RC
+-   x: x position in the SVG
+-   y: y position in the SVG
+
+### Match with network information (nodes)
+
+We will be drawing lines between the rooms. The `node` data frame is created in `R/network_00.R`. Here, we will import the final result:
+
+```{r}
+# source("../R/network_00.R", local = knitr::knit_global())
+
+nodes <- read_csv("../output/network_nodes_agg_all.csv")
+
+rooms_nodes <- merge(rooms, nodes, by="id_ap_3", all=T) %>%
+  select(!c("date", "total_duration_sec"))
+
+```
+
+`rooms_nodes` is a data frame with all the columns from `rooms` and :
+
+-   n_total: total number of visitors
+-   mean - mean duration of the visit, in seconds
+-   median - median duration of the visit, in seconds
+
+### Final filtering and export
+
+We can only draw those rooms with X and Y positions (those that appear in the blueprints of the museum). Therefore, we remove the rows with NAs in the x column.
+
+```{r}
+rooms_nodes <- rooms_nodes %>%
+  drop_na(x)
+
+write.csv(rooms_nodes, file = "../output/rooms_geom.csv", row.names = FALSE)
+
+head(rooms_nodes)
+```
+
+## Match geometry with links
+
+We will be drawing lines between the rooms. We need to provide the x and y information from the SVG to the links dataframe.
+
+`links` is created through `R/network_00.R`.
+
+```{r eval=FALSE}
+# source("../R/network_00.R", local = knitr::knit_global())
+```
+
+You can also load the data by importing the exported data frame:
+
+```{r}
+links <- read_csv("../output/network_agg_all.csv")
+```
+
+This dataframe doesn't include the Museum room, but it has `source` and `target` as id_ap_3. If we match `links` with `rooms` we can get all the information we need.
+
+The difficulty is that we have several wifipoints with the same id in more than one room.
+
+```{r}
+
+
+matchLinks <- function(id, param) {
+  
+  this_room <- rooms %>%
+    filter(id_ap_3 == id) %>%
+    drop_na("Museum_room") %>%
+    filter(Museum_room != "NA")
+  
+  if (nrow(this_room) == 1) {
+    return (this_room[, `param`])
+  } else if (nrow(this_room) == 0) {
+    return (NA)
+  } else if (nrow(this_room) == 2) {
+    return (this_room[1, `param`])
+  } else if ((nrow(this_room) %% 2) == 0) {
+    mid <- nrow(this_room) / 2
+    return (this_room[mid, `param`])
+  } else if ((nrow(this_room) %% 2) != 0) {
+    mid <- 0.5 + nrow(this_room) / 2
+    return (this_room[mid, `param`])
+  }
+}
+
+
+
+links_rooms <- links %>% 
+  rowwise() %>%
+  mutate(
+    source_x = matchLinks(source, "x"),
+    source_y = matchLinks(source, "y"),
+    target_x = matchLinks(target, "x"),
+    target_y = matchLinks(target, "y"),
+    source_museum_room = matchLinks(source, "Museum_room"),
+    target_museum_room = matchLinks(target, "Museum_room"),
+  ) %>%
+  select(!c("date", "total_duration_sec"), "mean", "median", "...1")
+
+head(links_rooms)
+
+```
+
+This dataset has:
+
+-   source, start room using `id_ap_3`
+-   target, end room using `id_ap_3`
+-   source_x, x position of the source room, using information from the SVG
+-   source_y, y position of the source room, using information from the SVG
+-   target_x, x position of the source room, using information from the SVG
+-   target_y, y position of the source room, using information from the SVG
+-   n_total, total number of visitors who did this specific route
+-   mean, mean duration of the visit, in seconds
+-   median, median duration of the visit, in seconds
+-   source_museum_room, actual room number of the starting point
+-   target_museum_room, actual room number of the ending point
+
+We can only use those links with x and y positions. Let's filter them.
+
+```{r}
+
+filtered_links <- links_rooms %>%
+  drop_na(source_x) %>%
+  drop_na(target_x)
+
+write.csv(filtered_links, file = "../output/links_geom.csv", row.names = FALSE)
+
+write.csv(
+  links_rooms,
+  file = "../output/links_geom_non_filtered.csv",
+  row.names = FALSE
+  )
+```
+
+### Summary of results
+
+```{r out.width="100%"}
+
+library("ggplot2")
+
+ggplot(
+  filtered_links %>%
+    mutate(
+      y = reorder(
+        paste("From", source_museum_room, "to", target_museum_room),
+        n_total)
+      ),
+  aes(
+    x = n_total,
+    y = y)) +
+  geom_bar(stat='identity') + 
+  theme_light()
+
+```
