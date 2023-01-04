@@ -56,7 +56,7 @@ ids with missmatches:
 **These are the nodes of the network. It includes:**
 
 - id_ap_3 - eg. 42
-- Room_Number - eg. 1
+- Room_Number - eg. 1. From https://www.dropbox.com/home/wifi_data/network_figs
 - Area - eg. Richelieu
 - Floor - eg. RC - Level 0
 - Museum_room - eg. 219
