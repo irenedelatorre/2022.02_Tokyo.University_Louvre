@@ -20,9 +20,12 @@ library(tidyr)
 
 We need to match ids from the geom rooms CSV and the nodes array.
 
-In general, `f9_ap_rooms` uses `id_ap_3` to match rooms. It's the only CSV with information both with the id and the original Museum room number.
+In general, `f9_ap_rooms` uses `id_ap_3` to match rooms. It's the only CSV
+with information both with the id and the original Museum room number.
 
-`load rooms.csv` --- This CSV was created scraping the SVG with Louvre's blueprint. To modify, check the [blueprints](https://github.com/irenedelatorre/2022.02_Tokyo.University_Louvre/tree/blueprints) branch.
+`load rooms.csv` --- This CSV was created scraping the SVG with Louvre's
+blueprint. To modify, check the [blueprints](https://github.com/irenedelatorre/2022.02_Tokyo.University_Louvre/tree/blueprints)
+branch.
 
 ```{r echo=FALSE}
 rooms_geom <- read_csv("../network_data/Rooms.geom/rooms.csv")
@@ -39,12 +42,12 @@ f9_ap_rooms <- read_csv("../network_data/Rooms.geom/f9_ap_rooms.csv")
 **Produce and export CSV again**
 
 ```{r eval = FALSE}
-source("R/1_load_data")
-source("R/2_merge_data.R")
+source("../R/1_load_data.R")
+source("../R/2_merge_data.R")
 
 ## f6 = f3 + f4 ------ merge by mac id ----------------------------------------
 
-source("R/3_match_f3_f4_to_f6.R")
+source("../R/3_match_f3_f4_to_f6.R")
 
 f6_id_1_2_matched <- create_f6(
   f3 = f3_WiFi_rename_miyajima_200528fin,
@@ -98,10 +101,21 @@ rooms <- merge(f9_ap_rooms, rooms_geom, by="Museum_room", all=T)
 
 ### Match with network information (nodes)
 
-We will be drawing lines between the rooms. The `node` data frame is created in `R/network_00.R`. Here, we will import the final result:
+We will be drawing lines between the rooms. The `node` data frame is created in `R/network_00.R`.
+
+#### All results (total)
 
 ```{r}
-# source("../R/network_00.R", local = knitr::knit_global())
+source("../R/network_01_agg.R")
+source("../R/network_00.R")
+
+all_agg_network(path = "../output/")
+
+```
+
+You can also import the final result:
+
+```{r}
 
 nodes <- read_csv("../output/network_nodes_agg_all.csv")
 
@@ -129,6 +143,16 @@ write.csv(rooms_nodes, file = "../output/rooms_geom.csv", row.names = FALSE)
 head(rooms_nodes)
 ```
 
+#### All results by month 
+
+```{r}
+# 
+# # --- by month
+# create_networks(path = "../output", "f10_Louvre_MIT_1_2017_11.csv", "2017-11")
+# create_networks(path = "../output", "f10_Louvre_MIT_1_2017_12.csv", "2017-12")
+# create_networks(path = "../output", "f10_Louvre_MIT_1_2018.csv", "2018-01")
+```
+
 ## Match geometry with links
 
 We will be drawing lines between the rooms. We need to provide the x and y information from the SVG to the links dataframe.
@@ -150,7 +174,6 @@ This dataframe doesn't include the Museum room, but it has `source` and `target`
 The difficulty is that we have several wifipoints with the same id in more than one room.
 
 ```{r}
-
 
 matchLinks <- function(id, param) {
   
@@ -186,7 +209,7 @@ links_rooms <- links %>%
     source_museum_room = matchLinks(source, "Museum_room"),
     target_museum_room = matchLinks(target, "Museum_room"),
   ) %>%
-  select(!c("date", "total_duration_sec"), "mean", "median", "...1")
+  select(!c("date", "total_duration_sec"), "mean", "median")
 
 head(links_rooms)
 

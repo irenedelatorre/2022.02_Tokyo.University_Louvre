@@ -4,9 +4,7 @@ library(dplyr)
 
 ## network_01_agg ------ get aggregated results -----=--------------------------
 
-source("R/network_01_agg.R")
-
-create_networks <- function(this_source, date) {
+create_networks <- function(this_source, date, path = "output/") {
 
   message("Importing file")
 
@@ -26,7 +24,7 @@ create_networks <- function(this_source, date) {
   write.csv(
     network,
     paste0(
-      "output/",
+      path,
       "network_agg_",
       date,
       ".csv"),
@@ -36,7 +34,7 @@ create_networks <- function(this_source, date) {
   write.csv(
     nodes,
     paste0(
-      "output/",
+      path,
       "network_nodes_agg_",
       date,
       ".csv"),
@@ -46,18 +44,14 @@ create_networks <- function(this_source, date) {
   message("File saved")
 }
 
-# --- by month
-create_networks("output/f10_Louvre_MIT_1_2017_11.csv", "2017-11")
-create_networks("output/f10_Louvre_MIT_1_2017_12.csv", "2017-12")
-create_networks("output/f10_Louvre_MIT_1_2018.csv", "2018-01")
 
 # ---- by total
 
-all_agg_network <- function() {
+all_agg_network <- function(path = "output/") {
   message("Importing files")
-  file_1 <- read_csv("output/f10_Louvre_MIT_1_2017_11.csv")
-  file_2 <- read_csv("output/f10_Louvre_MIT_1_2017_12.csv")
-  file_3 <- read_csv("output/f10_Louvre_MIT_1_2018.csv")
+  file_1 <- read_csv(paste0(path, "f10_Louvre_MIT_1_2017_11.csv"))
+  file_2 <- read_csv(paste0(path, "f10_Louvre_MIT_1_2017_12.csv"))
+  file_3 <- read_csv(paste0(path, "f10_Louvre_MIT_1_2018.csv"))
   
   message("Binding files")
   data <- rbind(file_1, file_2, file_3)
@@ -73,7 +67,7 @@ all_agg_network <- function() {
   write.csv(
     network,
     paste0(
-      "output/",
+      path,
       "network_agg_all",
       ".csv"),
     row.names = FALSE
@@ -82,7 +76,7 @@ all_agg_network <- function() {
   write.csv(
     nodes,
     paste0(
-      "output/",
+      path,
       "network_nodes_agg_all",
       ".csv"),
     row.names = FALSE
@@ -90,5 +84,3 @@ all_agg_network <- function() {
   
   message("File saved")
 }
-
-all_agg_network()
