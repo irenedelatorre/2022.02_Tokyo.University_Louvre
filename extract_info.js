@@ -7,13 +7,11 @@ const geometry = [];
 
 floors.each(function(d, i) {
 
-    console.log(d)
-
     // floor
     const this_floor = this.id;
 
     // go through the base
-    const id_base = i === 0 ? "" : `_${i+1}`;
+    const id_base = `_${this_floor}`;
     const base = d3.selectAll(`#ground${id_base}`);
     pushToArray(base, "ground", this_floor); 
 
@@ -21,6 +19,8 @@ floors.each(function(d, i) {
     const floor = d3.selectAll(`#rooms_blueprint${id_base}`)
         .selectAll("path");
     pushToArray(floor, "rooms_blueprint", this_floor); 
+
+    console.log(`#rooms_blueprint${id_base}`)
 
     // go through the stairs 
     const stairs = d3.select(`#stairs${id_base}`)
@@ -43,7 +43,6 @@ floors.each(function(d, i) {
         } else if (multi.length === 2) {
             id = multi[0];
         }
-        console.log(this_id, id)
         const room = d3.select(this)
             .selectAll("circle");
         rooms_museum.push({
