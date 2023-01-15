@@ -189,18 +189,18 @@ summary_f10(
 final_format_f10(
   f10_Louvre_MIT_1_2017_11,
   "f10_Louvre_MIT_1_2017_11.csv",
-  "../output"
+  "../output/"
   )
 
 final_format_f10(
   f10_Louvre_MIT_1_2017_12,
   "f10_Louvre_MIT_1_2017_12.csv",
-  "../output"
+  "../output/"
   )
 
 final_format_f10(
   f10_Louvre_MIT_1_2018,
   "f10_Louvre_MIT_1_2018.csv",
-  "../output"
+  "../output/"
   )
 ```
