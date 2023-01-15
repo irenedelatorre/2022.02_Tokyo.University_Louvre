@@ -7,6 +7,8 @@ const geometry = [];
 
 floors.each(function(d, i) {
 
+    console.log(d)
+
     // floor
     const this_floor = this.id;
 
@@ -31,20 +33,32 @@ floors.each(function(d, i) {
     
     rooms.each(function(c, j) {
         const this_id = this.id;
+        
+        const type = this_id.split("-");
+        const multi = this_id.split("_");
+        let id = this_id;
+
+        if (type.length === 2) {
+            id = type[1];
+        } else if (multi.length === 2) {
+            id = multi[0];
+        }
+        console.log(this_id, id)
         const room = d3.select(this)
             .selectAll("circle");
         rooms_museum.push({
             floor: this_floor,
-            room: this_id,
+            room: id,
             x: room.attr("cx"),
-            y: room.attr("cy")
+            y: room.attr("cy"),
+            type: type.length === 2 ? "other" : "room"
         })
     })
 
 })
 
 const geometry_keys = ["type", "floor", "d", "fill_rule"];
-const rooms_keys = ["floor", "room", "x", "y"];
+const rooms_keys = ["floor", "room", "x", "y", "type"];
 
 d3.select("#download_geom")
     .on("click", downloadBlob);
