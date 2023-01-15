@@ -61,12 +61,13 @@ create_new_user_track <- function(data, f8, f11) {
 #'
 #' @param data user data frame (a f10)
 #' @param name name of the export file
+#' @param name name of the folder
 #' 
 #' @return data frame with new mac id
 #' @export
 #'
 #' @examples
-final_format_f10 <- function(data, name) {
+final_format_f10 <- function(data, name, path = "output/") {
   data <- data %>%
     drop_na(id_ap_3) %>%
     filter(!is.null(user_id)) %>%
@@ -74,7 +75,7 @@ final_format_f10 <- function(data, name) {
   
   write.csv(
     data,
-    file = paste0("output/", name),
+    file = paste0(path, name),
     row.names = FALSE
   )
 }
