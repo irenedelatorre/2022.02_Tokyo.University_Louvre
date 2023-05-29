@@ -1,0 +1,11 @@
+#network svg, #network {
+    width: 100%;
+    height: 700px;
+}
+
+.labels_floors {
+    text-anchor: middle;
+    font-family: var(--font-text);
+    font-size: 0.8em;
+    font-weight: 700;
+}
