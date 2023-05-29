@@ -2,10 +2,12 @@
     --white: #fff;
     --black: #032122;
     --grey: #4E5858;
-    --ui_light: #10A3AB;
+    --ui: #10A3AB;
+    --ui-light: #E7F6F7;
     --ui_dark: #10858C;
 
     --font-text: 'Noto Sans', sans-serif;
+    --font-text-serif: 'Noto Serif', serif;
   }
 
 /* Main */
@@ -17,37 +19,119 @@ body {
     background: var(--white);
 }
 
+h1, h2, h3, h4, h5, h6, p, ul {
+    max-width: 680px;
+    width: 100%;
+    margin: 0 auto 1em auto;
+}
+
 h1 {
     color: var(--black);
-    /* font-weight: 900;
-    font-size: 1.75em;
-    line-height: 1.4em;
-    margin: 0; */
+    font-family: var(--font-text-serif);
+    font-weight: 700;
+    font-size: 3em;
+    line-height: 1.16em;
+    margin-top: 0.33em;
+    margin-bottom: 1.33em;
 }
 
 h2 {
-    /* font-weight: 700;
-    font-size: 1.25em;
-    line-height: 1.75em;
-    margin: -0.35px 0 0.5em; */
+    font-size: 1.375em;
+    line-height: 1.5em;
+    margin-bottom: 0;
+    font-weight: 700;
 }
 
 p {
     /* margin: 0 0 0.5em; */
 }
 
-/* a {
-    color: #E02E0B !important;
+ul {
+    padding-left: 14px;
 }
 
-a:hover, a:focus {
-    color: #004E67 !important;
-} */
+/* header */
+
+header {
+    text-align: center;
+    margin-top: 3em;
+}
+
+.description {
+    font-weight: 700;
+    font-size: 1em;
+    line-height: 1.25em;
+}
+
+.standfirst {
+    font-size: 1.25em;
+    line-height: 1.5em;
+    text-align: left;
+    color: var(--grey)
+}
+
+/* body */
+
+.section {
+    padding: 2.5em 0px 0px;
+}
+
+.info {
+    padding-bottom: 1em;
+    border-bottom: 1px solid var(--ui-light);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-bottom: 0;
+    gap: 0.5em;
+}
+
+/* legend */
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    padding: 2px 0px;
+    gap: 0;
+    max-width: 680px;
+    width: 100%;
+    margin: 0 auto 1em auto;
+}
+
+.legend .item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px;
+    gap: 0.375em;
+    margin-right: 1.5em;
+}
+
+.legend-blueprint .item-1 path,
+.legend-network .item-1 circle,
+.legend-network .item-3 path {
+    stroke: var(--black);
+}
+
+.legend-blueprint .item-2 path {
+    fill: #ADADAD;
+}
+
+.legend p {
+    font-size: 0.875em;
+    line-height: 1.57em;
+    color: var(--grey);
+    margin-bottom: 0;
+}
 
 /* NAV */
 nav {
     background-color: var(--ui_dark);
-    padding: 0.5625rem 2rem;
+    padding: 0.5625em 2em;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
 }
 
 nav a {
@@ -57,6 +141,75 @@ nav a {
     letter-spacing: 0.1em;
     text-transform: uppercase;
 }
+
+/* considerations */
+#section-considerations {
+    color: var(--grey);
+}
+
+/* footer */
+footer {
+    margin-top: 5.5em;
+    padding: 29px 32px 32px;
+    background: var(--ui);
+    color: var(--white);
+}
+
+footer a {
+    color: var(--white);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+footer .lab {
+    margin: 1.5em 0 2em;
+}
+
+footer p, footer h2 {
+    max-width: 100%;
+}
+
+footer .container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+footer .logo_usl {
+    width: 100%;
+    max-width: 61px;
+}
+
+footer .logo_uni {
+    width: 100%;
+    max-height: 64px;
+}
+
+footer .authors {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+}
+
+footer h2 {
+    margin-bottom: 1em;
+}
+
+.authors .author {
+    font-weight: 700;
+    margin-bottom: 0.5em;
+}
+
+.authors .position {
+    font-weight: normal;
+    font-style: italic;
+}
+
+
 
 /* container-fluid (charts and map) */
 /* .container-fluid {
