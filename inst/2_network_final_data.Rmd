@@ -1,0 +1,77 @@
+---
+title: "Network final data"
+author: "Irene de la Torre"
+date: '2023-05-29'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(dplyr)
+library(tidyr)
+```
+
+## Load Nodes
+
+_nodes_ has the information the rooms, it includes total duration (in minutes), 
+mean and median duration of the visit, and total of visitors. 
+Room is in _f9_ap_room_
+
+```{r}
+nodes <- read_csv("../network_data/output/network_nodes_agg_all.csv")
+
+f9_ap_rooms <- read_csv("../network_data/Rooms.geom/f9_ap_rooms.csv")
+
+```
+
+Let's merge both data frames to get floor, location and highlight information
+into rooms.
+
+```{r}
+find_info <- function(col, id) {
+  
+  position <- f9_ap_rooms %>% 
+    filter(as.numeric(id_ap_3) == as.numeric(id))
+
+  if (col != "Highlight") {
+    result <- position[1, col]
+    
+    result
+  } else {
+    highlight <- "NA"
+    
+    highlights <- position %>%
+      drop_na("Highlight")
+    
+    message(highlights$Highlight)
+    
+    "Hello"
+  }
+  
+}
+
+nodes_2 <- nodes
+
+nodes_2 <- nodes %>%
+  mutate(
+    Floor = "floor",
+    Highlight = "highlights",
+    Collection = "Collection",
+    Area = "area",
+    Museum_room = "Museum_room",
+    Type = "Type"
+    )
+
+for(i in 1:nrow(nodes_2)) {       # for-loop over rows
+  nodes_2[i, "Museum_room"] <- find_info("Museum_room", nodes_2[i, "id_ap_3"])
+  nodes_2[i, "Floor"] <- find_info("Floor", nodes_2[i, "id_ap_3"])
+  nodes_2[i, "Collection"] <- find_info("Collection", nodes_2[i, "id_ap_3"])
+  nodes_2[i, "Highlight"] <- find_info("Highlight", nodes_2[i, "id_ap_3"])
+  nodes_2[i, "Area"] <- find_info("Area", nodes_2[i, "id_ap_3"])
+  nodes_2[i, "Type"] <- find_info("Type", nodes_2[i, "id_ap_3"])
+}
+
+
+```
+
