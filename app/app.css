@@ -1,0 +1,84 @@
+:root {
+    --white: #fff;
+    --black: #032122;
+    --grey: #4E5858;
+    --ui_light: #10A3AB;
+    --ui_dark: #10858C;
+
+    --font-text: 'Noto Sans', sans-serif;
+  }
+
+/* Main */
+body {
+    font-family: var(--font-text);
+    font-size: 16px;
+    line-height: 1.375em;
+    color: var(--black);
+    background: var(--white);
+}
+
+h1 {
+    color: var(--black);
+    /* font-weight: 900;
+    font-size: 1.75em;
+    line-height: 1.4em;
+    margin: 0; */
+}
+
+h2 {
+    /* font-weight: 700;
+    font-size: 1.25em;
+    line-height: 1.75em;
+    margin: -0.35px 0 0.5em; */
+}
+
+p {
+    /* margin: 0 0 0.5em; */
+}
+
+/* a {
+    color: #E02E0B !important;
+}
+
+a:hover, a:focus {
+    color: #004E67 !important;
+} */
+
+/* NAV */
+nav {
+    background-color: var(--ui_dark);
+    padding: 0.5625rem 2rem;
+}
+
+nav a {
+    color: var(--white);
+    font-weight: 700;
+    font-size: 0.875em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+/* container-fluid (charts and map) */
+/* .container-fluid {
+    padding: 1em 2em 2em 2em;
+}
+
+.charts div {
+    background-color: #FFFFFF;
+    padding: 1em;
+    margin: 1em 0;
+}
+
+.charts .hand {
+    padding-right: 0.5em;
+    margin-top: -7px;
+} */
+
+/* Charts */
+/* .charts svg text {
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+div { */
+    /* border: 1px solid black; */
+/* } */
