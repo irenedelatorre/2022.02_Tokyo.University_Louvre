@@ -5,18 +5,33 @@ class networkClass {
         this.floors = item.floors;
         this.id = item.id;
         this.selectPlot = d3.select(`#${this.id}`);
+        this.selected_level = "All";
         this.scaleColor = item.scaleColor;
         this.core_colors = item.core_colors;
+        this.options = item.options;
+        this.hideNan = false;
         this.r = 5;
         this.padding = 25;
 
-        console.log(item);
+        console.log(this.links)
+    }
 
+    async execute() {
+        // Code for the first class
         this.init();
         this.createSVG();
         this.buildSimulation();
         this.drawNetwork();
-    }
+
+        // create the controls
+        const checkbox_network = new checkbox({
+            scaleColor: this.scaleColor,
+            options: this.options,
+            id: `${this.id}-controls`,
+            type: this.id,
+            module: this
+        })
+      }
 
     init() {
         this.margin = {t: 150, l: 16, r: 16, b: 150};
@@ -29,11 +44,10 @@ class networkClass {
             this.margin.t - 
             this.margin.b;
 
-            console.log(this.h)
         this.scaleStroke = d3
             .scaleLinear()
             .domain([1000, d3.max(this.links, (d) => d.n_total)])
-            .range([0.1, 10])
+            .range([0.1, 5])
             .clamp(true)
             .interpolate(function (a, b) {
                 const c = b - a;
@@ -60,22 +74,23 @@ class networkClass {
                 .append("svg")
                 .attr("viewBox", [0, 0, this.w, this.h]);
             
+                console.log(this.options)
             // Build Arrows ====
             this.plot
-                .append("svg:defs")
+                .append("defs")
                 .selectAll("marker")
-                .data(this.floors) // Different link types can be defined here
-                .join("svg:marker") // This section adds in the arrows
-                .attr("id", (d) => `arrow_${this.scaleColor(d)}`)
-                .style("fill", (d) => this.scaleColor(d))
+                .data(this.options) // Different link types can be defined here
+                .join("marker") // This section adds in the arrows
+                .attr("id", (d) => `arrow_${d.c.split("#")[1]}`)
+                .style("fill", (d) => d.c)
                 .style("stroke-width", 0)
                 .attr("viewBox", "0 -5 10 10")
-                .attr("refX", 1.5 + this.r * 2)
-                .attr("refY", -1.5)
+                .attr("refX", 1 + this.r * 2)
+                .attr("refY", 0)
                 .attr("markerWidth", this.r)
                 .attr("markerHeight", this.r)
                 .attr("orient", "auto")
-                .append("svg:path")
+                .append("path")
                 .attr("d", "M0,-5L10,0L0,5");
 
             this.plot_links = this.plot.append("g").attr("class", "links");
@@ -86,8 +101,6 @@ class networkClass {
             this.plot = this.selectPlot.select("svg");
         }
 
-        // this.plot = this.plot
-        //     .attr("viewBox", [0, 0, this.w, this.h]);
     }
 
     drawNetwork() {
@@ -96,27 +109,18 @@ class networkClass {
             .data(this.links)
             .join("path")
             .attr("class", "link")
-            // .attr("marker-end", (d) =>
-            //     select_floors === d.floor_source
-            //         ? `url(#arrow_${scaleColor(d.floor_source)})`
-            //         : `url(#arrow_${scaleColor("All")})`
-            // )
-            // .style("stroke", (d) =>
-            // select_floors === d.floor_source
-            //     ? scaleColor(d.floor_source)
-            //     : colors.links
-            // )
-            .style("stroke", "black")
+            .attr("marker-end", `url(#arrow_${this.scaleColor("All").split("#")[1]})`)
+            .style("stroke", this.scaleColor("All"))
             .style("stroke-width", (d) => this.scaleStroke(d.n_total))
             .style("mix-blend-mode", "multiply")
             .style("opacity", (d) => {
-                // if (select_floors === "All") {
-                //     return 0.15;
-                // } else if (select_floors === d.floor_source) {
-                //     return 1;
-                // } else {
-                //     return 0.025;
-                // }
+                if (this.selected_level === "All") {
+                    return 0.15;
+                } else if (this.selected_level === d.floor_source) {
+                    return 1;
+                } else {
+                    return 0.025;
+                }
             })
             .style("fill", "none");
 
@@ -141,10 +145,8 @@ class networkClass {
             this.simulation.tick();
           }
 
-          console.log(this.nodes)
+
         this.ticked();
-        // this.simulation.stop();
-        // invalidation.then(() => this.simulation.stop());
     }
 
     buildSimulation() {
@@ -217,4 +219,38 @@ class networkClass {
             return max_x;
           });
       }
+
+    updateVisual(type, value) {
+        
+        if (type === "checkbox") {
+            this.selected_level = value;
+        } else if (type === "toggle") {
+            this.hideNan = value;
+        }
+
+        // update links
+        this.drawLinks
+            .attr("marker-end", (d) => {
+                const color = this.selected_level === d.source.main_floor
+                    ? this.scaleColor(d.source.main_floor)
+                    : this.scaleColor("All");
+                return `url(#arrow_${color.split("#")[1]})`;
+            })
+            .style("stroke", (d) =>
+                this.selected_level === d.source.main_floor
+                    ? this.scaleColor(d.source.main_floor)
+                    : this.scaleColor("All")
+            )
+            .style("opacity", (d) => {
+                if (this.selected_level === "All") {
+                    return 0.15;
+                } else if (this.selected_level === d.source.main_floor) {
+                    return 1;
+                } else {
+                    return 0.025;
+                }
+            })
+            .style("display", d => this.hideNan && d.isNan ? "none" : "inherit");
+
+    }
 }

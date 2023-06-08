@@ -29,6 +29,7 @@ Promise.all([
         all_floors,
         map_rooms
         );
+
     const links = clean_network.links(
         metadata_wifi,
         all_links,
@@ -37,7 +38,10 @@ Promise.all([
         );
 
     //// 0 COMMON SCALES ////
+    const core_colors = {links: "#666666", nodes_s: "#032122", nodes_f: "#fff"};
+
     const colors_floors = [
+        {level: "All", name: "All", c: core_colors.links, short: "All"},
         {level: 2, name: "N2 - Level 2", c: "#6D0000", short: "Level 2"},
         {level: 1, name: "N1 - Level 1", c: "#BC4900", short: "Level 1"},
         {level: 0, name: "RC - Level 0", c: "#F7992E", short: "Level 0"},
@@ -45,29 +49,26 @@ Promise.all([
         {level: -2, name: "S2 - Level -2", c: "#003468", short: "Level -2"},
     ];
 
-    const core_colors = {links: "#666", nodes_s: "#032122", nodes_f: "#fff"};
-
     const scaleColor = d3
         .scaleOrdinal()
         .domain(colors_floors.map(d => d.name))
         .range(colors_floors.map(d => d.c))
-        .unknown(core_colors.links)
+        .unknown(core_colors.links);
 
     // 2 CREATE NETWORK ---
-    const network = new networkClass({
-        nodes: nodes,
-        links: links,
-        floors: all_floors,
-        scaleColor: scaleColor,
-        core_colors: core_colors,
-        id: "network"
-    });
+    // Define an async IIFE (Immediately Invoked Function Expression) 
+    // to call the classes sequentially
+    (async () => {
+        const network = await new networkClass({
+                nodes: nodes,
+                links: links,
+                floors: all_floors,
+                scaleColor: scaleColor,
+                core_colors: core_colors,
+                id: "network",
+                options: colors_floors
+            }).execute();
+    })();
 
-    const checkbox_network = new checkbox({
-        scaleColor: scaleColor,
-        options: colors_floors,
-        id: "network-controls",
-        type: "network",
-        module: network
-    })
+
 })
