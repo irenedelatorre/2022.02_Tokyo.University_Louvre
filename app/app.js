@@ -37,8 +37,9 @@ Promise.all([
         map_rooms
         );
 
+        console.log(nodes)
     //// 0 COMMON SCALES ////
-    const core_colors = {links: "#666666", nodes_s: "#032122", nodes_f: "#fff"};
+    const core_colors = {links: "#666666", nodes_s: "#fff", nodes_f: "#fff"};
 
     const colors_floors = [
         {level: "All", name: "All", c: core_colors.links, short: "All"},

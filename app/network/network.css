@@ -9,3 +9,11 @@
     font-size: 0.8em;
     font-weight: 700;
 }
+
+.node_highlight {
+    filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.4));
+}
+
+.links {
+    pointer-events: none;
+}

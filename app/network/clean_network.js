@@ -17,7 +17,7 @@ const clean_network = {
         all_links.forEach(d => {
             parse.merge_wifi_link(metadata_wifi, d);
 
-
+            // check if the source and target appear in the museum
             d.id_ap_3_source = clean_network.get_Museum_n(
                 d.room_source,
                 metadata_wifi
@@ -27,12 +27,15 @@ const clean_network = {
                 d.room_target,
                 metadata_wifi
             );
+
+            const bouncer_s = clean_network.bouncer(d.id_ap_3_source);
+            const bouncer_t = clean_network.bouncer(d.id_ap_3_target);
+            const isNaN = !bouncer_s || !bouncer_t ? false : true;
     
             // give a new id for the network layout
             d.source = map_rooms.indexOf(d.room_source);
             d.target = map_rooms.indexOf(d.room_target);
-            d.isNan = clean_network.bouncer(d.id_ap_3_source) &&
-                clean_network.bouncer(d.id_ap_3_target);
+            d.isNaN = isNaN;
         });
 
         return all_links.filter((d) => d.target >= 0 && d.source >= 0);
@@ -48,6 +51,8 @@ const clean_network = {
     bouncer(id) {
         const array = [id];
         const filtered = array.filter(Boolean);
+        // if the array is longer than 0
+        // then the room is not NaN
         return filtered.length > 0 ? false : true;
       }
 

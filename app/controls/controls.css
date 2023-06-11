@@ -31,12 +31,21 @@
 }
 
 label {
-    display: block;
     position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0;
+    gap: 0;
 }
 
 label.levels {
     padding-left: 1.75em;
+}
+
+label.toggleSwitch {
+    border-top: 1px solid #F2F2F2;
+    padding-top: 1em;
 }
 
 form label input {
@@ -48,6 +57,26 @@ form label input {
     margin-top: 0.05em !important;
 }
 
-form label span {
+form label.toggleSwitch span {
     padding: 0 0 0 1.5em;
+}
+
+form label span.label_name {
+    padding: 0 0 0 0.375em;
+}
+
+/* // colors */
+form input[type="radio"], form input[type="checkbox"] {
+    accent-color: var(--ui);
+    background-color: var(--ui);
+} 
+
+span.dot {
+    margin: 0 0 0 1.7em;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    padding: 0;
+    border: 1px solid rgba(0, 0, 0, 0.2);
 }

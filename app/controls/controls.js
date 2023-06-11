@@ -38,7 +38,7 @@ class checkbox {
             .append("input")
             .attr("type", "radio")
             .attr("id", d => `${this.type}_${d.level}`)
-            .attr("name", d => this.type)
+            .attr("name", this.type)
             .attr("value", d => d.name)
             .property("checked", (d) => {
                 return d.level === "All";
@@ -46,21 +46,30 @@ class checkbox {
 
         this.checkboxes
             .append("span")
+            .attr("class", d => `dot level_${d.level}`)
+            // .text("\u26AB")
+            .style("background-color", d => this.scaleColor(d.name));
+        this.checkboxes
+            .append("span")
+            .attr("class", "label_name")
             .text(d => d.short);
     }
 
     createToggle() {
-        this.toggle = this.select
-            .selectAll("toggleSwitch")
+        this.toggles = this.select
+            .selectAll(".toggleSwitch")
             .data([0])
-            .join("input")
-            .attr("type", "checkbox")
-            .attr("id", "toggleSwitch");
+            .join("label")
+            .attr("class", "toggleSwitch");
 
-        const label = this.select
-            .append("label")
-            .attr("for", "toggleSwitch")
-            .text("Hide undefined rooms");
+        this.toggle = this.toggles
+            .append("input")
+            .attr("type", "checkbox")
+            .attr("name", `${this.type}_toggleSwitch`);
+
+        const label = this.toggles
+            .append("span")
+            .text("Hide unknown rooms");
 
         // // Add event listener to handle toggle functionality
         // checkbox.on("change", function() {

@@ -9,11 +9,10 @@ class networkClass {
         this.scaleColor = item.scaleColor;
         this.core_colors = item.core_colors;
         this.options = item.options;
-        this.hideNan = false;
+        this.hideNaN = false;
         this.r = 5;
         this.padding = 25;
 
-        console.log(this.links)
     }
 
     async execute() {
@@ -21,7 +20,7 @@ class networkClass {
         this.init();
         this.createSVG();
         this.buildSimulation();
-        this.drawNetwork();
+        this.drawNetwork(this.links, this.nodes, true);
 
         // create the controls
         const checkbox_network = new checkbox({
@@ -47,7 +46,7 @@ class networkClass {
         this.scaleStroke = d3
             .scaleLinear()
             .domain([1000, d3.max(this.links, (d) => d.n_total)])
-            .range([0.1, 5])
+            .range([0.05, 5])
             .clamp(true)
             .interpolate(function (a, b) {
                 const c = b - a;
@@ -85,7 +84,7 @@ class networkClass {
                 .style("fill", (d) => d.c)
                 .style("stroke-width", 0)
                 .attr("viewBox", "0 -5 10 10")
-                .attr("refX", 1 + this.r * 2)
+                .attr("refX", this.r * 2 - 2)
                 .attr("refY", 0)
                 .attr("markerWidth", this.r)
                 .attr("markerHeight", this.r)
@@ -93,8 +92,9 @@ class networkClass {
                 .append("path")
                 .attr("d", "M0,-5L10,0L0,5");
 
-            this.plot_links = this.plot.append("g").attr("class", "links");
+           
             this.plot_nodes = this.plot.append("g").attr("class", "nodes");
+            this.plot_links = this.plot.append("g").attr("class", "links");
             this.plot_labels = this.plot.append("g").attr("class", "labels");
 
         } else {
@@ -103,36 +103,55 @@ class networkClass {
 
     }
 
-    drawNetwork() {
+    drawNetwork(links, nodes, callSimulation) {
         this.drawLinks = this.plot_links
             .selectAll(".link")
-            .data(this.links)
+            .data(links)
             .join("path")
             .attr("class", "link")
-            .attr("marker-end", `url(#arrow_${this.scaleColor("All").split("#")[1]})`)
-            .style("stroke", this.scaleColor("All"))
-            .style("stroke-width", (d) => this.scaleStroke(d.n_total))
-            .style("mix-blend-mode", "multiply")
+            .attr("marker-end", (d) => {
+                const color = this.selected_level === d.source.main_floor
+                    ? this.scaleColor(d.source.main_floor)
+                    : this.scaleColor("All");
+                return `url(#arrow_${color.split("#")[1]})`;
+            })
+            .style("stroke", (d) =>
+                this.selected_level === d.source.main_floor
+                    ? this.scaleColor(d.source.main_floor)
+                    : this.scaleColor("All")
+            )
             .style("opacity", (d) => {
                 if (this.selected_level === "All") {
                     return 0.15;
-                } else if (this.selected_level === d.floor_source) {
+                } else if (this.selected_level === d.source.main_floor) {
                     return 1;
                 } else {
                     return 0.025;
                 }
             })
-            .style("fill", "none");
+            .style("stroke-width", (d) => this.scaleStroke(d.n_total))
+            .style("mix-blend-mode", "multiply")
+            .style("fill", "none")
 
         this.drawNodes = this.plot_nodes
             .selectAll(".node")
-            .data(this.nodes)
+            .data(nodes)
             .join("circle")
-            .attr("class", "node")
+            .attr("class", d =>
+                d.highlight !== "" ?
+                "node node_highlight" :
+                "node"
+            )
             .attr("r", (d) => this.scaleR(d.median))
-            .style("stroke-width", (d) => (d.highlight !== "" ? 3 : 0.5))
+            .style("stroke-width", (d) => d.highlight !== "" ? 3 : 1)
             .style("fill", (d) => this.scaleColor(d.main_floor))
-            .style("stroke", this.core_colors.nodes_s);
+            .style("stroke", d =>
+                d.highlight !== "" ?
+                this.core_colors.nodes_s :
+                "#000"
+            )
+            .style("stroke-opacity", d => d.highlight !== "" ? 1 : 0.2)
+            .on("mouseover", d => console.log(d));
 
         this.drawLabels = this.plot_labels
             .selectAll(".labels_floors")
@@ -141,10 +160,11 @@ class networkClass {
             .attr("class", "labels_floors")
             .text((d) => d);
         
-          for (let i = 0; i < 1000; i++) {
-            this.simulation.tick();
-          }
-
+        if (callSimulation) {
+            for (let i = 0; i < 1000; i++) {
+                this.simulation.tick();
+            }
+        }
 
         this.ticked();
     }
@@ -221,36 +241,34 @@ class networkClass {
       }
 
     updateVisual(type, value) {
+        let filtered_links = this.links;
+        let filtered_nodes = this.nodes;
+        
         
         if (type === "checkbox") {
             this.selected_level = value;
         } else if (type === "toggle") {
-            this.hideNan = value;
+            this.hideNaN = value;
         }
 
-        // update links
-        this.drawLinks
-            .attr("marker-end", (d) => {
-                const color = this.selected_level === d.source.main_floor
-                    ? this.scaleColor(d.source.main_floor)
-                    : this.scaleColor("All");
-                return `url(#arrow_${color.split("#")[1]})`;
-            })
-            .style("stroke", (d) =>
-                this.selected_level === d.source.main_floor
-                    ? this.scaleColor(d.source.main_floor)
-                    : this.scaleColor("All")
-            )
-            .style("opacity", (d) => {
-                if (this.selected_level === "All") {
-                    return 0.15;
-                } else if (this.selected_level === d.source.main_floor) {
-                    return 1;
-                } else {
-                    return 0.025;
+        // filter by level && this NaN
+        if (this.selected_level !== "All" || this.hideNaN) {
+            filtered_links = filtered_links.filter(d => {
+                if (this.selected_level !== "All" && !this.hideNaN) {
+                    // filter selected level
+                    return d.source.main_floor === this.selected_level;
+                } else if (this.selected_level !== "All" && this.hideNaN) {
+                    // filter selected level + isNan
+                    return d.source.main_floor === this.selected_level &&
+                        !d.isNaN;
+                } else if (this.selected_level === "All" && this.hideNaN) {
+                    // filter isNan
+                    return !d.isNaN;
                 }
-            })
-            .style("display", d => this.hideNan && d.isNan ? "none" : "inherit");
+            });
+        }
+
+        this.drawNetwork(filtered_links, filtered_nodes, false);
 
     }
 }

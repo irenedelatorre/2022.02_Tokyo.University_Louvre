@@ -35,15 +35,23 @@ const parse = {
         const position = wifi.filter((e) => e.id_ap_3 === node.id_ap_3);
         const areas = d3.groupSort(position, g => g.length, d => d.area);
         const floors = d3.groupSort(position, g => g.length, d => d.floor);
+        const museum_rooms = d3.groupSort(
+            position,
+            g => g.length,
+            d => d.museum_room
+        );
         const highlights = d3.groupSort(
             position, g => g.length,
             d => d.highlight
             );
 
-        node.area = parse.toString(areas);
-        node.floor = parse.toString(floors);
+        node.area = parse.toString(areas, "areas");
+        node.floor = parse.toString(floors, "floors", true);
         node.main_floor = floors[0];
-        node.highlight = parse.toString(highlights);
+        node.highlight = parse.toString(highlights, "highlights");
+        node.museum_room = parse.toString(museum_rooms, "rooms");
+        node.isNaN = node.museum_room === "" ? true : false;
+
     },
 
     merge_wifi_link: function(wifi, link) {
@@ -86,16 +94,18 @@ const parse = {
       },
     
     
-    toString: function(array) {
+    toString: function(array, place, test) {
         let value = "";
 
         for (var n in array) {
-            if (array[n] !== "NA") {
+            if (array[n] === "NA" || (place === "rooms" && isNaN(array[n]))) {
+                value = value;
+            } else {
                 value =
                 value.length < 1 ? array[n] : `${value}, ${array[n]}`;
             }
           }
-        
+
         return value;
     }
 }
