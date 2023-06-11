@@ -1,0 +1,82 @@
+.table-divs {
+    margin: 0 0 1em 0 !important;
+    padding: 0 !important;
+    border-bottom: 1px solid var(--black);
+    width: 74%;
+}
+
+.table>tbody>tr>td,
+.table>tbody>tr>th,
+.table>tfoot>tr>td,
+.table>tfoot>tr>th {
+    border-top: none !important;
+    border-bottom: none !important;
+    font-size: 0.875em;
+    color: var(--black);
+    padding: 0 0.5em;
+    line-height: 1.25em;
+    vertical-align: middle;
+}
+
+.table>thead>tr>td,
+.table>thead>tr>th {
+    border-top: none !important;
+    border-bottom: none !important;
+    font-size: 0.875em;
+    color: var(--black);
+    line-height: 1.25em;
+    vertical-align: middle;
+}
+
+
+thead {
+    padding-bottom: 0.5em !important;
+    border-bottom: none;
+    margin-bottom: 0.5em;
+}
+
+.th {
+    font-weight: 700;
+    padding-top: 0.7em !important;
+    padding-bottom: 0.7em !important;
+}
+
+.table .th-sm {
+    border-left: none;
+    border-right: none;
+    padding-bottom: 0.5em;
+}
+
+#t-Rooms, .row-table .index, .row-table .name, .row-table .visitors_number {
+    text-align: right;
+}
+
+.name, #t-Rooms {
+    padding-right: 1em !important;
+}
+
+.visitors-bar {
+    border-left: 1px solid var(--grey-subtle);
+    padding-left: 0 !important;
+}
+
+#t-NumberofVisitors {
+    padding-left: 0 !important;
+}
+
+/* widths of columns */
+#t-Rooms {
+    width: 14rem;
+ }
+
+ #t-Index {
+    white-space: nowrap;
+    text-align: right;
+    width: 5rem;
+ }
+
+ #t-Number {
+    text-align: right;
+    width: 7rem;
+}
+ 

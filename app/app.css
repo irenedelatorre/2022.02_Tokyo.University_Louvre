@@ -2,6 +2,7 @@
     --white: #fff;
     --black: #032122;
     --grey: #4E5858;
+    --grey-subtle: #E7E7E7;
     --ui: #10A3AB;
     --ui-light: #E7F6F7;
     --ui_dark: #10858C;
@@ -141,6 +142,14 @@ nav a {
     letter-spacing: 0.1em;
     text-transform: uppercase;
 }
+
+/* bar chart */
+#section-bar .visual {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 
 /* considerations */
 #section-considerations {

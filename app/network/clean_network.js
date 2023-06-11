@@ -13,7 +13,7 @@ const clean_network = {
         return all_nodes.filter((d) => d.id >= 0);
     },
 
-    links: function(metadata_wifi, all_links, all_floors, map_rooms) {
+    links: function(metadata_wifi, all_links, all_floors, map_rooms, all) {
         all_links.forEach(d => {
             parse.merge_wifi_link(metadata_wifi, d);
 
@@ -35,10 +35,12 @@ const clean_network = {
             // give a new id for the network layout
             d.source = map_rooms.indexOf(d.room_source);
             d.target = map_rooms.indexOf(d.room_target);
+            d.change_floor = d.main_floor !== d.main_floor_target ?
+                true : false;
             d.isNaN = isNaN;
         });
 
-        return all_links.filter((d) => d.target >= 0 && d.source >= 0);
+        return all_links;
     },
 
     get_Museum_n(id, metadata_wifi) {

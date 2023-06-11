@@ -34,10 +34,8 @@ Promise.all([
         metadata_wifi,
         all_links,
         all_floors,
-        map_rooms
-        );
+        map_rooms);
 
-        console.log(nodes)
     //// 0 COMMON SCALES ////
     const core_colors = {links: "#666666", nodes_s: "#fff", nodes_f: "#fff"};
 
@@ -61,14 +59,29 @@ Promise.all([
     // to call the classes sequentially
     (async () => {
         const network = await new networkClass({
-                nodes: nodes,
-                links: links,
-                floors: all_floors,
-                scaleColor: scaleColor,
-                core_colors: core_colors,
-                id: "network",
-                options: colors_floors
-            }).execute();
+            nodes: nodes,
+            links: links.filter((d) => d.target >= 0 && d.source >= 0),
+            floors: all_floors,
+            scaleColor: scaleColor,
+            core_colors: core_colors,
+            id: "network",
+            options: colors_floors
+        }).execute();
+
+        // visitors by trajectory
+        const bar_table = await new barTableClass({
+            links: links,
+            floors: all_floors,
+            scaleColor: scaleColor,
+            core_colors: core_colors,
+            id: "visitors-by-trajectory-table",
+            bar_head: "bar_width",
+            div_id: "table-divs",
+            options: colors_floors,
+            headers: ["Index", "Rooms", "Number of Visitors", "Number"],
+            barIndex: 3,
+            rowHeight: 24,
+        }).execute();
     })();
 
 

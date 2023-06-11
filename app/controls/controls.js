@@ -70,17 +70,5 @@ class checkbox {
         const label = this.toggles
             .append("span")
             .text("Hide unknown rooms");
-
-        // // Add event listener to handle toggle functionality
-        // checkbox.on("change", function() {
-        // var isChecked = d3.select(this).property("checked");
-        // if (isChecked) {
-        //     console.log("Toggle is ON");
-        //     // Perform actions when the toggle is ON
-        // } else {
-        //     console.log("Toggle is OFF");
-        //     // Perform actions when the toggle is OFF
-        // }
-        // });
     }
 }

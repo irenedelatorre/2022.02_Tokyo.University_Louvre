@@ -58,9 +58,20 @@ const parse = {
         const position = wifi.filter((e) => e.id_ap_3 === link.room_source);
         const areas = d3.groupSort(position, g => g.length, d => d.area);
         const floors = d3.groupSort(position, g => g.length, d => d.floor);
+
+        // source
         link.area = parse.toString(areas);
         link.floor = parse.toString(floors);
         link.main_floor = floors[0];
+
+        // target
+        const position_target = wifi.filter((e) => 
+            e.id_ap_3 === link.room_target
+        );
+        const floors_target = d3.groupSort(position_target, g => 
+            g.length, d => d.floor
+        );
+        link.main_floor_target = floors_target[0];
     },
 
     // parseGeometry: function(d) {
