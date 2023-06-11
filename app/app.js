@@ -57,6 +57,8 @@ Promise.all([
     // 2 CREATE NETWORK ---
     // Define an async IIFE (Immediately Invoked Function Expression) 
     // to call the classes sequentially
+    let bar_table;
+
     (async () => {
         const network = await new networkClass({
             nodes: nodes,
@@ -69,7 +71,7 @@ Promise.all([
         }).execute();
 
         // visitors by trajectory
-        const bar_table = await new barTableClass({
+        bar_table = await new barTableClass({
             links: links,
             floors: all_floors,
             scaleColor: scaleColor,
@@ -82,7 +84,16 @@ Promise.all([
             barIndex: 3,
             rowHeight: 24,
         }).execute();
+
     })();
 
+    console.log(bar_table)
+
+    // update on windows resize
+    window.onresize = function() {
+
+        // doesn't need it 
+        // bar_table.resize();
+    };
 
 })

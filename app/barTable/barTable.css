@@ -67,6 +67,7 @@ thead {
 /* widths of columns */
 #t-Rooms {
     width: 14rem;
+    min-width: 132px;
  }
 
  #t-Index {

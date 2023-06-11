@@ -48,7 +48,6 @@ class barTableClass {
 
     createTable(links) {
 
-        console.log(links.sort((a, b) => b.n_total - a.n_total))
         this.thisRow = this.table.selectAll("tbody")
             .selectAll("tr")
             .data(links.sort((a, b) => b.n_total - a.n_total))
@@ -98,24 +97,20 @@ class barTableClass {
 
         // scales
         const max = d3.max(this.links, d => d.n_total)
-        this.scaleX = d3.scaleLinear().domain([0, max]).range([0, this.width]);
+        this.scaleX = d3.scaleLinear().domain([0, max]).range([0, 100]);
 
         this.plotSVGs = this.thisRow
-            .selectAll('.svg-data')
-            .selectAll('svg')
+            .selectAll(".svg-data")
+            .selectAll(".svg")
             .data(d => [d])
-            .join('svg')
-            .attr('class', d => `svg_${d.floor.replace(/\s/g, "")}`)
-            .attr('width', this.width)
-            .attr('height', this.height + this.margin.t + this.margin.b)
-            .selectAll('rect')
-            .data(d => [d])
-            .join('rect')
-            .attr('x', 0)
-            .attr('y', this.margin.t)
-            .attr('width', d => this.scaleX(d.value))
-            .attr('height', this.height)
-            .style('fill', d => this.scaleColor(d.floor))
+            .join("div")
+            .attr("class", d => `svg svg_${d.floor.replace(/\s/g, "")}`)
+            .attr("margin-left", 0)
+            .attr("margin-top", this.margin.t)
+            .style("width", d => `${this.scaleX(d.value)}%`)
+            .style("height", `${this.height}px`)
+            .style("margin", `${this.margin.t}px 0`)
+            .style("background-color", d => this.scaleColor(d.floor))
     }
 
     updateVisual(type, value) {
@@ -144,8 +139,7 @@ class barTableClass {
             });
         }
 
-        console.log((type, value) )
-        console.log(filtered_links)
         this.createTable(filtered_links);
     }
+
 }
