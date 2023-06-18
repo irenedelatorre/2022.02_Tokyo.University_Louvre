@@ -17,6 +17,8 @@ Promise.all([
     const geometry = files[3];
     const blueprint_rooms = files[4];
 
+    console.log(geometry)
+
     //// NETWORK DATA ////
     const all_floors = d3.groupSort(
         metadata_wifi,
@@ -35,12 +37,10 @@ Promise.all([
         map_rooms
         );
 
-    const geom_nodes = parse.merge_geom_nodes(
+    const geom_rooms = parse.merge_geom_nodes(
         blueprint_rooms,
         metadata_wifi
     );
-
-    console.log(geom_nodes)
 
     // Links (network) array has
     // area: "Denon"​​​
@@ -70,7 +70,7 @@ Promise.all([
         links
     );
 
-    console.log(geom_links)
+    console.log(geom_links.filter(d => isNaN(d.x_source)))
 
     //// 0 COMMON SCALES ////
     const core_colors = {links: "#666666", nodes_s: "#fff", nodes_f: "#fff"};
@@ -93,6 +93,7 @@ Promise.all([
     // 2 CREATE NETWORK ---
     // Define an async IIFE (Immediately Invoked Function Expression) 
     // to call the classes sequentially
+    const blueprint_container = document.querySelector('#blueprint');
     (async () => {
         const network = await new networkClass({
             nodes: nodes,
@@ -118,6 +119,22 @@ Promise.all([
             barIndex: 3,
             rowHeight: 24,
         }).execute();
+
+        //blueprints
+        const blueprint = await new blueprintClass({
+            geometry: geometry,
+            rooms: geom_rooms,
+            links: geom_links,
+            id: "blueprint",
+            core_colors: core_colors,
+            scaleColor: scaleColor,
+            // floors: all_floors,
+            options: colors_floors,
+            size_w: 1552,
+            size_h: 793
+        }).execute();
+
+        // new p5(blueprint);
 
     })();
 

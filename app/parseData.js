@@ -78,9 +78,26 @@ const parse = {
         link.main_floor_target = floors_target[0];
     },
 
+    // BLUEPRINT
     parseGeometry: function(d) {
+        let floor = 0;
+        let floor_name = "RC - Level 0";
+        if (d.floor === "S1") {
+            floor = -1;
+            floor_name = "S1 - Level -1";
+        } else if (d.floor === "S2") {
+            floor = -2;
+            floor_name = "S2 - Level -2";
+        } else if (d.floor === "N1") {
+            floor = 1;
+            floor_name = "N1 - Level 1";
+        } else if (d.floor === "N2") {
+            floor = 2;
+            floor_name = "N2 - Level 2";
+        }
         return {
-            floor: d.floor,
+            floor_n: floor,
+            floor: floor_name,
             type: d.type,
             path: d.d,
             fill_rule: d.fill_rule === null ? "inherit" : d.fill_rule
@@ -88,19 +105,35 @@ const parse = {
     },
 
     parseGeomRooms: function(d) {
+        let floor = 0;
+        let floor_name = "RC - Level 0";
+        if (d.floor === "S1") {
+            floor = -1;
+            floor_name = "S1 - Level -1";
+        } else if (d.floor === "S2") {
+            floor = -2;
+            floor_name = "S2 - Level -2";
+        } else if (d.floor === "N1") {
+            floor = 1;
+            floor_name = "N1 - Level 1";
+        } else if (d.floor === "N2") {
+            floor = 2;
+            floor_name = "N2 - Level 2";
+        }
+
         return {
-            floor: d.floor,
+            floor_n: floor,
+            floor: floor_name,
             mRoom: +d.room,
             id_ap_3: +d.id_ap_3,
-            x_svg: +d.x,
-            y_svg: +d.y,
+            x: +d.x,
+            y: +d.y,
             type: d.type
         }
     },
 
     merge_geom_nodes: function(rooms, metadata_wifi) {
         const geom_rooms = rooms;
-        console.log(metadata_wifi, rooms)
 
         geom_rooms.forEach(d => {
 
@@ -130,33 +163,33 @@ const parse = {
             // get source info
             const this_room_s = rooms.filter(e =>
                 e.mRoom === d.mRoom_source &&
-                e.floor === d.main_floor.split(" - ")[0]
+                e.floor === d.main_floor
             );
             const this_room_t = rooms.filter(e =>
                 e.mRoom === d.mRoom_target &&
-                e.floor === d.main_floor_target.split(" - ")[0]
+                e.floor === d.main_floor_target
             );
 
             d.x_source = this_room_s.length > 0 ?
-                this_room_s[0].x_svg :
+                this_room_s[0].x :
                 NaN;
             d.y_source = this_room_s.length > 0 ?
-                this_room_s[0].y_svg :
+                this_room_s[0].y :
                 NaN;
             d.x_target = this_room_t.length > 0 ?
-                this_room_t[0].x_svg :
+                this_room_t[0].x :
                 NaN;
             d.y_target = this_room_t.length > 0 ?
-                this_room_t[0].y_svg :
+                this_room_t[0].y :
                 NaN;
         });
 
         return geom_links.filter(d =>
-            !isNaN(d.mRoom_source) ||
-            !isNaN(d.mRoom_target)
+            d.mRoom_source >= 0 && d.mRoom_target >= 0
         );
     },
 
+    // OTHER
     getNodeInfo: function(array, param, roomN, info, type) {
         const real_param =
           type === "other" && param === "Museum_room" ? "Room_id" : param;
