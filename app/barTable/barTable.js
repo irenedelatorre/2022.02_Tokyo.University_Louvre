@@ -56,34 +56,43 @@ class barTableClass {
 
         this.thisRow 
             .selectAll("td")
-            .data((d, i) => [
-                {
-                    key: `From ${d.room_source} to ${d.room_target}`,
-                    text: i + 1,
-                    class: "index",
-                    source: d.room_source,
-                    target: d.room_target
-                },
-                {
-                    key: `From ${d.room_source} to ${d.room_target}`,
-                    text: `From ${isNaN(d.room_target) ? "?" : d.room_target} to ${isNaN(d.room_target) ? "?" : d.room_target}`,
-                    class: "name",
-                    target: d.room_target
-                }, {
-                    key: `From ${d.room_source} to ${d.room_target}`,
-                    value: d.n_total,
-                    text: "",
-                    class: "visitors-bar svg-data",
-                    floor: d.main_floor,
-                    change_floor: d.change_floor,
-                    target: d.room_target
-                }, {
-                    key: `From ${d.room_source} to ${d.room_target}`,
-                    text: d.n_total,
-                    class: "visitors_number",
-                    target: d.room_target
-                }
-            ])
+            .data((d, i) => {
+                const move = `${d.mRoom_source}_${d.mRoom_target}`;
+                const text_source = isNaN(d.mRoom_source) ?
+                    "?" :
+                    d.mRoom_source;
+                const text_target = isNaN(d.mRoom_target) ?
+                    "?" :
+                    d.mRoom_target;
+
+                return [
+                    {
+                        key: `From ${d.mRoom_source} to ${d.mRoom_target}`,
+                        text: i + 1,
+                        class: `index ${move}`,
+                        source: d.mRoom_source,
+                        target: d.mRoom_target
+                    },
+                    {
+                        key: `From ${d.mRoom_source} to ${d.mRoom_target}`,
+                        text: `From ${text_source} to ${text_target}`,
+                        class: `name ${move}`
+                    }, {
+                        key: `From ${d.mRoom_source} to ${d.mRoom_target}`,
+                        value: d.n_total,
+                        text: "",
+                        class: `visitors-bar svg-data ${move}`,
+                        floor: d.main_floor,
+                        change_floor: d.change_floor,
+                    }, {
+                        key: `From ${d.mRoom_source} to ${d.mRoom_target}`,
+                        text: d.n_total,
+                        class: `visitors_number ${move}`,
+                        source: d.mRoom_source,
+                        target: d.mRoom_target
+                    }
+                ]
+            })
             .join("td")
             .attr("class", d => d.class)
             .html(d => d.class === "visitors_number" ?

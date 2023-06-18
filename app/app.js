@@ -6,11 +6,16 @@ Promise.all([
     d3.csv('./assets/data/network_nodes_agg_all.csv', parse.parseNodesNW),
     d3.csv('./assets/data/network_agg_all.csv', parse.parseLinksNW),
 
+    // BLUEPRINT
+    d3.csv('./assets/data/geometry/geometry.csv', parse.parseGeometry),
+    d3.csv('./assets/data/geometry/rooms.csv', parse.parseGeomRooms)
 ])
 .then(function(files) {
     const metadata_wifi = files[0];
     const all_nodes = files[1];
     const all_links = files[2];
+    const geometry = files[3];
+    const blueprint_rooms = files[4];
 
     //// NETWORK DATA ////
     const all_floors = d3.groupSort(
@@ -30,11 +35,42 @@ Promise.all([
         map_rooms
         );
 
+    const geom_nodes = parse.merge_geom_nodes(
+        blueprint_rooms,
+        metadata_wifi
+    );
+
+    console.log(geom_nodes)
+
+    // Links (network) array has
+    // area: "Denon"​​​
+    // change_floor: true (if the movement goes from one floor to another)​​​
+    // floor: "N1 - Level 1" (source floor)​​​
+    // id_source: 51​​​ (id_ap_3)
+    // id_target: 37 (id_ap_3)​​​
+    // isNaN: false (if there is no match with one of the museum rooms)​​​
+    // mRoom_source: 717 (museum room)​​​
+    // mRoom_target: 410 (museum room)​​​​​​
+    // main_floor: "N1 - Level 1" (main source floor)​​​
+    // main_floor_target: "RC - Level 0" (main target floor)​​​ ​​​
+    // median: 8.52​​​
+    // n_total: 2861​​​
+    // source: 30​​​ (force layout id)
+    // target: 17 (force layout id)
     const links = clean_network.links(
         metadata_wifi,
         all_links,
-        all_floors,
-        map_rooms);
+        map_rooms,
+        nodes
+        );
+    
+    // Links (geometry) same information as Links (network) with svg info
+    const geom_links = parse.merge_geom_links(
+        blueprint_rooms, 
+        links
+    );
+
+    console.log(geom_links)
 
     //// 0 COMMON SCALES ////
     const core_colors = {links: "#666666", nodes_s: "#fff", nodes_f: "#fff"};
@@ -57,8 +93,6 @@ Promise.all([
     // 2 CREATE NETWORK ---
     // Define an async IIFE (Immediately Invoked Function Expression) 
     // to call the classes sequentially
-    let bar_table;
-
     (async () => {
         const network = await new networkClass({
             nodes: nodes,
@@ -71,7 +105,7 @@ Promise.all([
         }).execute();
 
         // visitors by trajectory
-        bar_table = await new barTableClass({
+        const bar_table = await new barTableClass({
             links: links,
             floors: all_floors,
             scaleColor: scaleColor,
@@ -86,8 +120,6 @@ Promise.all([
         }).execute();
 
     })();
-
-    console.log(bar_table)
 
     // update on windows resize
     window.onresize = function() {
