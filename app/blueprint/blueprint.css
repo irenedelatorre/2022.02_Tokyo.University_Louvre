@@ -11,6 +11,7 @@
 
 .ground {
     fill: var(--grey-300);
+    stroke: var(--black);
 }
 
 .stairs {

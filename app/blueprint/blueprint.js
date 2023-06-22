@@ -173,7 +173,10 @@ class blueprintClass {
             .selectAll(".link")
             .data(d => links.filter((e) => e.floor === d))
             .join("line")
-            .attr("class", d =>`link ${d.mRoom_source} ${d.mRoom_target}`)
+            .attr("class", d => d.change_floor ?
+                `link link_change ${d.mRoom_source} ${d.mRoom_target}` :
+                `link ${d.mRoom_source} ${d.mRoom_target}`
+            )
             .attr("stroke", (d) => this.scaleColor(d.floor))
             .attr("stroke-dasharray", d => d.change_floor ?
                 this.scaleStroke(d.n_total) :
@@ -264,8 +267,11 @@ class blueprintClass {
 
       moveInIso(levels) {
         // hard coded 
-        const extra = -1150 * this.scaleIsoX;
+        const extra = levels.target > levels.source ?
+            -1150 * this.scaleIsoX :
+            -1150 * this.scaleIsoX;
         const dif_levels = Math.abs(levels.target - levels.source);
+        console.log(levels, dif_levels)
         const trans_y = this.y_iso + extra * dif_levels
         return trans_y;
       }
@@ -293,6 +299,18 @@ class blueprintClass {
             .attr("transform", `translate(0, 0) scale(1, 1) rotate(0)`)
       }
 
+      checkHide() {
+        if(this.hideChange){
+            this.plotFloors.selectAll(".link_change").style("display", "none");
+            this.plotFloors.selectAll(".movements_up").style("display", "none");
+            this.plotFloors.selectAll(".movements_down").style("display", "none");
+        } else {
+            this.plotFloors.selectAll(".link_change").style("display", "inherit");
+            this.plotFloors.selectAll(".movements_up").style("display", "inherit");
+            this.plotFloors.selectAll(".movements_down").style("display", "inherit");
+        }
+      }
+
       updateVisual(type, value) {
         let prev;
 
@@ -309,7 +327,8 @@ class blueprintClass {
             }
             
         } else if (type === "toggle") {
-            this.hideNaN = value;
+            this.hideChange = value;
+            this.checkHide();
         }
     }
 }

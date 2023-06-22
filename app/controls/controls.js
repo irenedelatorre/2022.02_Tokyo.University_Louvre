@@ -69,6 +69,9 @@ class checkbox {
 
         const label = this.toggles
             .append("span")
-            .text("Hide unknown rooms");
+            .text(this.type === "blueprint" ?
+                "Hide change of floors" : 
+                "Hide unknown rooms"
+            );
     }
 }
