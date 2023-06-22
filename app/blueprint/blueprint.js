@@ -11,17 +11,27 @@ class blueprintClass {
         this.ratio = Math.round((100 * this.size_h) / this.size_w) / 100;
         this.scaleColor = item.scaleColor;
         this.options = item.options;
-        // this.container = document.querySelector(`#${item.id}`);
-        // new p5(this.sketch.bind(this), this.container);
-        this.selected_level = "RC - Level 0";
+        this.iso = true;
+        this.iso_trans = 0;
+        this.h_iso_g = -350;
+        this.padding_iso_g = -150;
+        this.y_iso = this.h_iso_g + this.padding_iso_g;
+        this.scaleIsoX = 0.6;
+        this.selected_level = "All";
     }
 
     async execute(){
-        console.log("init")
+  
         // Code for the first class
         this.init();
         this.createSVG();
         this.drawFloors();
+
+        if (this.selected_level === "All") {
+            this.toIso();
+        } else {
+            this.revertIso();
+        }
 
         // create the controls
         const checkbox_network = new checkbox({
@@ -57,29 +67,60 @@ class blueprintClass {
             this.plot = this.selectPlot.select("svg");
         }
 
+        const steps = this.floors.length - 1;
+        const newHeight = 500;
         this.plot
             .attr("width", this.w)
-            .attr("height", (this.w * this.ratio))
-            .attr("viewBox", `0 0 ${this.size_w} ${this.size_h}`)
+            .attr("height", this.selected_level === "All" ? 
+                (this.w * this.ratio + 220 * steps) : 
+                (this.w * this.ratio)
+            )
+            .attr("viewBox", this.selected_level === "All" ?
+                `0 0 ${this.size_w} ${this.size_h + newHeight * (steps)}` :
+                `0 0 ${this.size_w} ${this.size_h}`)
             .attr("xmlns", "http://www.w3.org/2000/svg");
     }
 
     drawFloors() {
-        const this_level = this.floors.filter((e) => 
-            e[0] === this.selected_level
+        const this_level = this.selected_level === "All" ?
+            this.floors :
+            this.floors.filter((e) => 
+                e[0] === this.selected_level
         );
+
+        const range = this.selected_level === "All" ?
+            [0.01, 30] :
+            [0.01, 30];
+
+        this.scaleStroke = this.scaleStroke.range(range);
+
         this.plotFloors = this.plot
-            .selectAll("g")
-            .data(this_level)
+            .selectAll(".g-levels")
+            .data(this_level, d => d[0])
             .join("g")
+            .attr("class", "g-levels")
             .attr("id", (d) => `level_${d[0]}`);
 
         // ground
-        this.drawGeom("ground");
-        this.drawGeom("stairs");
-        this.drawGeom("rooms_blueprint");
-        this.drawLinks();
-        this.drawRooms();
+        if (this.selected_level === "All") {
+            this.drawGeom("ground");
+            this.drawGeom("stairs");
+            this.drawGeom("rooms_blueprint");
+            this.drawLinks_sameFloor("no_change");
+            this.drawLinks("down");
+            this.drawLinks("up");
+            this.drawRooms();
+        } else if (this.selected_level !== "All"){
+            this.drawGeom("ground");
+            this.drawGeom("stairs");
+            this.drawGeom("rooms_blueprint");
+            this.drawLinks_sameFloor("no_change");
+            this.drawRooms();
+
+            d3.selectAll(".movements_up").remove();
+            d3.selectAll(".movements_down").remove();
+        }
+
     }
 
     drawGeom(name) {
@@ -92,7 +133,7 @@ class blueprintClass {
         g.selectAll("path")
             .data((d) => d[1].filter((e) => e.type === name))
             .join("path")
-            .attr("class", name)
+            .attr("class", this.selected_level === "All" ? `iso ${name}` : name)
             .attr("id", (d) => `${d.floor}_${name}`)
             .attr("d", (d) => d.path)
             .attr("fill-rule", (d) => d.fill_rule);
@@ -100,10 +141,12 @@ class blueprintClass {
 
     drawRooms() {
         this.plotFloors
-            .append("g")
+            .selectAll(".rooms")
+            .data(d => [d[1][0].floor])
+            .join("g")
             .attr("class", "rooms")
             .selectAll(".room")
-            .data(this.rooms.filter((d) => d.floor === this.selected_level))
+            .data((d) => this.rooms.filter((e) => e.floor === d))
             .join("circle")
             .attr("class", d => (d.id_ap_3 >= 0 ?
                 "room r_known" :
@@ -114,148 +157,159 @@ class blueprintClass {
             .attr("r", (d) => (d.id_ap_3 >= 0 ? 2 : 1));
     }
 
-    drawLinks(links) {
+    drawLinks_sameFloor(flow) {
+
+        const links = this.selected_level !== "All" ? 
+            this.links : 
+            this.links.filter(d => !d.change_floor);
+
+        // level view
+        // or iso, but same level
         this.plotFloors
-            .append("g")
-            .attr("class", "movements")
+            .selectAll(`.movements_${flow}`)
+            .data(d => [d[1][0].floor])
+            .join("g")
+            .attr("class", `movements movements_${flow}`)
             .selectAll(".link")
-            .data(this.links.filter((d) => d.floor === this.selected_level))
+            .data(d => links.filter((e) => e.floor === d))
             .join("line")
-            .attr("class", "link")
-            .attr("stroke", (d) =>
-                d.change_floor ? "black" : this.scaleColor(d.floor)
+            .attr("class", d =>`link ${d.mRoom_source} ${d.mRoom_target}`)
+            .attr("stroke", (d) => this.scaleColor(d.floor))
+            .attr("stroke-dasharray", d => d.change_floor ?
+                this.scaleStroke(d.n_total) :
+                0
             )
-            .attr("x1", (d) => {
-                if (isNaN(d.x_source)){
-                    console.log(d)
-                }
-                return d.x_source
-            })
+            // .attr("stroke-opacity", d => d.change_floor ? 0.5 : 1)
+            .attr("x1", (d) => d.x_source)
             .attr("x2", (d) => d.x_target)
             .attr("y1", (d) => d.y_source)
             .attr("y2", (d) => d.y_target)
             .style("stroke-width", (d) => this.scaleStroke(d.n_total));
+    }
+
+    drawLinks(flow) {
+
+        // if flow remains in the same level, check drawLinks_sameFloor
+        // if flow goes up -- draw in same level
+        // source remains the same, target gets moved
+        // if flow goes down -- draw in target level to include it
+        // in the background
+        // source gets moved, source remains the same
+        this.plotFloors
+            .selectAll(`.movements_${flow}`)
+            .data(d => [d[1][0].floor])
+            .join("g")
+            .attr("class", `movements movements_${flow}`)
+            .selectAll(".link")
+            .data(d => {    
+                let links = [];
+                if (flow === "down") {
+                    // 1) draw movements that go to that target
+                    links = this.links.filter(e => {
+                        const levels = this.checkLevel(
+                            e.main_floor,
+                            e.main_floor_target
+                        );
+                        return levels.source > levels.target &&
+                            e.main_floor_target === d;
+                    });
+
+                } else if (flow === "up") {
+                   // 1) draw movements that go to that target
+                   links = this.links.filter(e => {
+                        const levels = this.checkLevel(
+                            e.main_floor,
+                            e.main_floor_target
+                        );
+                        return levels.source < levels.target &&
+                            e.main_floor === d;
+                    });
+                }
+
+                return links;
+            })
+            .join("line")
+            .attr("class", d =>`link ${d.mRoom_source} ${d.mRoom_target}`)
+            .attr("stroke", (d) => this.scaleColor(d.floor))
+            .attr("x1", (d) => d.x_source)
+            .attr("x2", (d) => d.x_target)
+            .attr("y1", (d) => d.y_source)
+            .attr("y1", (d) => {
+                if (flow === "down") {
+                    const levels = this.checkLevel(
+                        d.main_floor,
+                        d.main_floor_target
+                    );
+                    const trans_y = this.moveInIso(levels);
+                    return d.y_source + trans_y;
+                } else if (flow === "up") {
+                    return d.y_source
+                }
+            })
+            .attr("y2", (d) => {
+                if (flow === "up") {
+                    const levels = this.checkLevel(
+                        d.main_floor,
+                        d.main_floor_target
+                    );
+                    
+                    const trans_y = this.moveInIso(levels);
+                    return d.y_target + trans_y
+                } else if (flow === "down") {
+                    return d.y_target;
+                }
+            })
+            .style("stroke-width", (d) => this.scaleStroke(d.n_total));
+      }
+
+      moveInIso(levels) {
+        // hard coded 
+        const extra = -1150 * this.scaleIsoX;
+        const dif_levels = Math.abs(levels.target - levels.source);
+        const trans_y = this.y_iso + extra * dif_levels
+        return trans_y;
+      }
+
+      checkLevel(source, target) {
+        const level_t = this.options.filter((e) => e.name === target);
+        const level_s = this.options.filter((e) => e.name === source);
+        return {"source": level_s[0].level, "target": level_t[0].level}
+      }
+
+      toIso() {
+        this.iso = true;
+        this.iso_trans = 10;
+        const newSize = this.size_h / 1.5;
+        const iso_ratio = 0.7;
+        const scale = `scale(${this.scaleIsoX}, ${this.scaleIsoX * iso_ratio})`;
+        
+        this.plotFloors
+            .attr("transform", (d) => 
+                `translate(200, ${this.y_iso * (d[1][0].floor_n - 2.2)}) ${scale}`);
+      }
+
+      revertIso() {
+        this.plotFloors
+            .attr("transform", `translate(0, 0) scale(1, 1) rotate(0)`)
       }
 
       updateVisual(type, value) {
-        
+        let prev;
+
         if (type === "checkbox") {
+            prev = this.selected_level;
             this.selected_level = value;
+            this.createSVG();
+            this.drawFloors();
+
+            if (value === "All") {
+                this.toIso();
+            } else if (value !== "All" && prev === "All") {
+                this.revertIso();
+            }
+            
         } else if (type === "toggle") {
             this.hideNaN = value;
         }
-
-        // // filter by level && this NaN
-        // if (this.selected_level !== "All" || this.hideNaN) {
-        //     filtered_links = filtered_links.filter(d => {
-        //         if (this.selected_level !== "All" && !this.hideNaN) {
-        //             // filter selected level
-        //             return d.source.main_floor === this.selected_level;
-        //         } else if (this.selected_level !== "All" && this.hideNaN) {
-        //             // filter selected level + isNan
-        //             return d.source.main_floor === this.selected_level &&
-        //                 !d.isNaN;
-        //         } else if (this.selected_level === "All" && this.hideNaN) {
-        //             // filter isNan
-        //             return !d.isNaN;
-        //         }
-        //     });
-        // }
-
-        // ground
-        this.drawFloors();
     }
-    // async sketch(p) {
-    //     const object = this;
-    //     let canvas;
-    //     let context;
-
-    //     p.setup = () => {
-    //         this.w = document.getElementById(this.id).clientWidth;
-    //         this.h = document.getElementById(this.id).clientHeight;
-    //         canvas = p.createCanvas(
-    //             this.w,
-    //             this.h,
-    //             p.WEBGL
-    //         );
-    //         // prepare for 2d drawing later
-    //         canvas.id('canvas');
-    //         const this_canvas = document.getElementById('canvas');
-    //         context = this_canvas.getContext("2d");
-
-    //         p.background("red");
-    //         p.noLoop();
-    //     };
-
-    //     p.draw = () => {
-    //         p.translate(-this.w / 2, -this.h / 2);
-    //         const this_floor = this.floor === undefined ? 0 : this.floor;
-    //         const this_floor_g = this.geometry.filter(d => d.floor_n === this_floor);
-
-
-    //         p.scale(0.3);
-    //         draw_geometry(this_floor_g);
-    //         console.log(this_floor, this_floor_g)
-
-    //     }
-
-    //     function draw_geometry (geom) {
-    //         drawGround(geom.filter(d => d.type === "ground"));
-    //         console.log(geom)
-    //     }
-
-    //     function drawGround(ground) {
-    //         ground.forEach(d => {
-    //             const svgGround = createPathFromSVG(d.path);
-    //         // console.log(svgGround)
-    //         // Draw a custom shape
-    //         p.fill("black")
-    //         p.beginShape();
-    //         for (let i = 0; i < svgGround.length; i++) {
-    //             const command = svgGround[i];
-    //             if (command.type === "M") {
-    //                 p.vertex(command.x, command.y);
-    //             } else if (command.type === "L") {
-    //                 p.vertex(command.x, command.y);
-    //             } else if (command.type === "Z") {
-    //                 p.endShape(p.CLOSE);
-    //             }
-    //         }
-    //         });
-            
-    //         // p.endShape(p.CLOSE);
-
-    //     }
-
-    //     function createPathFromSVG(pathString) {
-    //         const commands = [];
-    //         const segments = pathString.split(/(?=[A-Z])/);
-    
-    //         segments.forEach((segment) => {
-    //             const type = segment.charAt(0);
-    //             const coords = segment.substring(1).trim().split(" ");
-    //             const x = parseFloat(coords[0]);
-    //             const y = parseFloat(coords[1]);
-            
-    //             commands.push({ type, x, y });
-    //           });
-            
-    //           return commands;
-    //     }
-    // }
-
-    // setup() {
-    //     this.w = document.getElementById(this.id).clientWidth;
-    //     this.h = document.getElementById(this.id).clientHeight;
-    //     createCanvas(
-    //         this.container.width,
-    //         this.container.height,
-    //         this.WEBGL
-    //     );
-    //     background("black");
-    // }
-
-    // draw() {
-
-    // }
 }
