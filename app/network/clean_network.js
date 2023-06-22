@@ -10,31 +10,33 @@ const clean_network = {
             d.id = map_rooms.indexOf(d.id_ap_3);
         });
 
-        return all_nodes.filter((d) => d.id >= 0);
+        return all_nodes;
     },
 
-    links: function(metadata_wifi, all_links, all_floors, map_rooms, all) {
+    links: function(metadata_wifi, all_links, map_rooms) {
         all_links.forEach(d => {
-            parse.merge_wifi_link(metadata_wifi, d);
-
-            // check if the source and target appear in the museum
-            d.id_ap_3_source = clean_network.get_Museum_n(
-                d.room_source,
+            // check if the source and target appear in the museum 
+            d.mRoom_source = clean_network.get_Museum_n(
+                d.id_source,
                 metadata_wifi
             );
 
-            d.id_ap_3_target = clean_network.get_Museum_n(
-                d.room_target,
+            d.mRoom_target = clean_network.get_Museum_n(
+                d.id_target,
                 metadata_wifi
             );
 
-            const bouncer_s = clean_network.bouncer(d.id_ap_3_source);
-            const bouncer_t = clean_network.bouncer(d.id_ap_3_target);
+            parse.merge_wifi_link(
+                metadata_wifi,
+                d
+            );
+            const bouncer_s = clean_network.bouncer(d.mRoom_source);
+            const bouncer_t = clean_network.bouncer(d.mRoom_target);
             const isNaN = !bouncer_s || !bouncer_t ? false : true;
     
             // give a new id for the network layout
-            d.source = map_rooms.indexOf(d.room_source);
-            d.target = map_rooms.indexOf(d.room_target);
+            d.source = map_rooms.indexOf(d.id_source);
+            d.target = map_rooms.indexOf(d.id_target);
             d.change_floor = d.main_floor !== d.main_floor_target ?
                 true : false;
             d.isNaN = isNaN;
@@ -45,8 +47,22 @@ const clean_network = {
 
     get_Museum_n(id, metadata_wifi) {
         const this_room = metadata_wifi.filter((d) => d.id_ap_3 === id);
-        if (this_room.length > 0) {
-          return +this_room[0].museum_room;
+        const ids = d3.groupSort(
+            this_room,
+            g => g.length,
+            d => d.museum_room
+        );
+        // filter out NaN
+        const ids_noNan = ids.filter(d => d >= 0);
+
+        // if there is only one match get the room, whatever the value
+        if (ids.length === 1) {
+            return ids[0];
+        // if there is more than one match, pick the first room in the list
+        } else if (ids.length > 1 && ids_noNan.length > 0) {
+            return ids_noNan[0];
+        } else if (ids.length > 1 && ids_noNan.length === 0) {
+            return NaN;
         }
       },
 

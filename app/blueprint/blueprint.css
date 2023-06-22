@@ -1,0 +1,44 @@
+:root {
+    --grey-100: #f2f2f2;
+    --grey-300: #E7E7E7;
+    --grey-600: #666;
+  }
+
+#blueprint {
+    width: 100%;
+    height: auto;
+}
+
+.ground {
+    fill: var(--grey-300);
+    stroke: var(--black);
+}
+
+.stairs {
+    fill: var(--grey-100);
+}
+
+.rooms_blueprint {
+    fill: var(--grey-100);
+}
+
+.room.r_unknown {
+    fill: var(--grey-600)
+}
+
+.room.r_known {
+    fill: var(--black)
+}
+
+.iso {
+    opacity: 0.9;
+    filter: drop-shadow(0px 8px 3px rgba(0, 0, 0, 0.2));
+}
+
+.movements_up line, .movements_down line {
+    opacity: 0.9;
+}
+
+.movements line {
+    mix-blend-mode: multiply;
+}
