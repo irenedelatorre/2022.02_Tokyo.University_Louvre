@@ -32,7 +32,7 @@
             WiFi tracking is a valuable tool used in various settings to 
             understand pedestrian behavior. This research employed WiFi 
             tracking at the Louvre Museum for three months, from November 
-            2017 to January 2018, to obtain the location of visitors and 
+            2017 to February 2018, to obtain the location of visitors and 
             make some observations.
         </p>    
     </header>
@@ -86,8 +86,8 @@
                     A complex network
                 </h2>
                 <p>
-                    The human flow in the Louvre can be seen as a complex 
-                    network of systems. Each node represents a room, each 
+                    Human flows in the Louvre can be represented as a 
+                    complex network. Each node represents a room, each 
                     edge express a pedestrian flow.
                 </p>
                 <div class="legend legend-network">
@@ -179,7 +179,7 @@
         <div class="section" id="section-considerations">
             <h2>Considerations</h2>
             <p>
-                It is important to consider the following problems 
+                It is important to consider the following limitations 
                 regarding WiFi data:
             </p>
             <ul>
@@ -193,12 +193,17 @@
                     access point.
                 </li>
                 <li>
+                    Some WiFi access points are available in several
+                    floors at once. Colors represent floor levels
+                    that appear the most often given one trajectory.
+                </li>
+                <li>
                     The device settings, such as having the wireless option 
                     enabled or disabled, affects the result. 
                 </li>
                 <li>
                     People with multiple devices connected to the Wi-Fi 
-                    are counted twice.
+                    are counted multiple times.
                 </li>
             </ul>
         </div>
@@ -214,7 +219,7 @@
             <div class="col-md-10 authors">
                 <h2>Team</h2>
                 <p class="author">Yuji Yoshimura <span class="position">Principal Investigator</span></p>
-                <p class="author">Daniel Kondor <span class="position">????</span></p>
+                <p class="author">Daniel Kondor <span class="position">Researcher</span></p>
                 <p class="author">Irene de la Torre Arenas <span class="position">Visualization</span></p>
                 <p class="author">Yamauchi Mizuki <span class="position">????</span></p>
                 </br>
@@ -229,16 +234,6 @@
     <script src="./libraries/d3/d3.v7.min.js"></script>
     <script src="./libraries/d3/forceInABox.js"></script>
     <script src="./libraries/p5/p5.min.js"></script>
-    <!-- <script src="./libraries/d3/d3-simple-slider.min.js"></script>
-    <script src="./libraries/d3/topojson.js"></script>
-    <script src="./libraries/mapbox-leaflet/mapbox.js-bower-3.1.1/mapbox.js"></script>
-    <script src="./libraries/mapbox-leaflet/leaflet.zoomhome.min.js"></script>
-    
-    <script src="./app/control-animations/control-animations.js"></script>
-    <script src="./app/meters_time/meters_time.js"></script>
-    <script src="./app/meters_wards/meters_wards.js"></script>
-    <script src="./app/map/map.js"></script>
-    <script src="./app/legend/legend.js"></script> -->
     <script src="./app/parseData.js"></script>
     <script src="./app/network/clean_network.js"></script>
     <script src="./app/network/network.js"></script>
