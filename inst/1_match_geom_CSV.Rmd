@@ -110,7 +110,10 @@ We will be drawing lines between the rooms. The
 source("../R/network_01_agg.R")
 source("../R/network_00.R")
 
-all_agg_network(path = "../assets/data/")
+all_agg_network(
+  path = "../../network_data/Users.Locations-output/",
+  path_output = "../assets/data/"
+  )
 
 ```
 
@@ -168,7 +171,7 @@ information from the SVG to the links dataframe.
 You can also load the data by importing the exported data frame:
 
 ```{r}
-links <- read_csv("../assets/data/network_agg_all.csv")
+links <- read_csv("../output/network_agg_all.csv")
 ```
 
 This dataframe doesn't include the Museum room, but it has `source` and 
@@ -242,7 +245,7 @@ filtered_links <- links_rooms %>%
   drop_na(source_x) %>%
   drop_na(target_x)
 
-write.csv(filtered_links, file = "../assets/data/links_geom.csv", row.names = FALSE)
+write.csv(filtered_links, file = "../output/links_geom.csv", row.names = FALSE)
 
 write.csv(
   links_rooms,

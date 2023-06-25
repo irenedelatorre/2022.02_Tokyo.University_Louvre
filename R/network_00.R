@@ -47,7 +47,7 @@ create_networks <- function(this_source, date, path = "output/") {
 
 # ---- by total
 
-all_agg_network <- function(path = "output/") {
+all_agg_network <- function(path = "output/", path_output = "output/") {
   message("Importing files")
   file_1 <- read_csv(paste0(path, "f10_Louvre_MIT_1_2017_11.csv"))
   file_2 <- read_csv(paste0(path, "f10_Louvre_MIT_1_2017_12.csv"))
@@ -68,7 +68,7 @@ all_agg_network <- function(path = "output/") {
   write.csv(
     network,
     paste0(
-      path,
+      path_output,
       "network_agg_all",
       ".csv"),
     row.names = FALSE
@@ -77,7 +77,7 @@ all_agg_network <- function(path = "output/") {
   write.csv(
     nodes,
     paste0(
-      path,
+      path_output,
       "network_nodes_agg_all",
       ".csv"),
     row.names = FALSE

@@ -125,7 +125,7 @@ f5A_Louvre_MIT_1_2017_12 <- read_csv(
     ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 ``` r
-f5A_Louvre_MIT_1_2018 <- read_csv(
+f5A_Louvre_MIT_1_2018_1 <- read_csv(
   paste0(source_users,"Users.Locations/Louvre_MIT(1-2018)_v3.csv"))
 ```
 
@@ -141,7 +141,23 @@ f5A_Louvre_MIT_1_2018 <- read_csv(
     ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 ``` r
-head(f5A_Louvre_MIT_1_2018)
+f5A_Louvre_MIT_1_2018_2 <- read_csv(
+  paste0(source_users,"Users.Locations/Louvre_MIT(2-2018).csv"))
+```
+
+    ## Rows: 1921807 Columns: 12
+    ## -- Column specification --------------------------------------------------------
+    ## Delimiter: ","
+    ## chr  (6): ID, ACCESS_POINT_HOSTNAME, ACCESS_POINT_IP_ADDRESS, DEVICE_CLASS_T...
+    ## dbl  (2): TIME_DUR_MIN, WEEKDAY
+    ## date (1): DATE
+    ## time (3): TIME_DEB, TIME_END, TIME_DUR
+    ## 
+    ## i Use `spec()` to retrieve the full column specification for this data.
+    ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+head(f5A_Louvre_MIT_1_2018_1)
 ```
 
     ## # A tibble: 6 x 12
@@ -183,7 +199,8 @@ source("../R/4_match_f5_f6_to_f8.R")
 f8_ap_matched_rooms <- create_f8(
   f5A_Louvre_MIT_1_2017_11,
   f5A_Louvre_MIT_1_2017_12,
-  f5A_Louvre_MIT_1_2018,
+  f5A_Louvre_MIT_1_2018_1,
+  f5A_Louvre_MIT_1_2018_2,
   f6 = f6_id_1_2_matched,
   f12 = f12_room_names_ids
   )
@@ -195,7 +212,7 @@ f8_ap_matched_rooms <- create_f8(
 
 ``` r
 source("../R/5_f8_to_summary_f9.R")
-f9_ap_rooms <- create_f9(f8_ap_matched_rooms, "../output/f9_ap_rooms.csv")
+f9_ap_rooms <- create_f9(f8_ap_matched_rooms, "../assets/data/f9_ap_rooms.csv")
 ```
 
 ### f11 = new user ids
@@ -206,7 +223,8 @@ source("../R/7_f5_to_f11_new_user_ids.R")
 f11_new_user_ids <- create_f11(
   f5A_Louvre_MIT_1_2017_11,
   f5A_Louvre_MIT_1_2017_12,
-  f5A_Louvre_MIT_1_2018
+  f5A_Louvre_MIT_1_2018_1,
+  f5A_Louvre_MIT_1_2018_2
 )
 ```
 
@@ -229,21 +247,27 @@ f10_Louvre_MIT_1_2017_12 <- create_new_user_track(
   f11_new_user_ids
   )
 
-f10_Louvre_MIT_1_2018 <- create_new_user_track(
-  f5A_Louvre_MIT_1_2018,
+f10_Louvre_MIT_1_2018_1 <- create_new_user_track(
+  f5A_Louvre_MIT_1_2018_1,
   f8_ap_matched_rooms,
   f11_new_user_ids
   )
 
+f10_Louvre_MIT_1_2018_2 <- create_new_user_track(
+  f5A_Louvre_MIT_1_2018_2,
+  f8_ap_matched_rooms,
+  f11_new_user_ids
+  )
 
 summary_f10(
   f10_Louvre_MIT_1_2017_11,
   f10_Louvre_MIT_1_2017_12,
-  f10_Louvre_MIT_1_2018
+  f10_Louvre_MIT_1_2018_1,
+  f10_Louvre_MIT_1_2018_2
   )
 ```
 
-    ## Match rooms, ap_ids and users: 2364622 out of 5152811 movements matched (46%)
+    ## Match rooms, ap_ids and users: 3301788 out of 7074619 movements matched (47%)
 
 #### Export final format
 
@@ -251,18 +275,24 @@ summary_f10(
 final_format_f10(
   f10_Louvre_MIT_1_2017_11,
   "f10_Louvre_MIT_1_2017_11.csv",
-  "../output/"
+  "../../network_data/Users.Locations-output/"
   )
 
 final_format_f10(
   f10_Louvre_MIT_1_2017_12,
   "f10_Louvre_MIT_1_2017_12.csv",
-  "../output/"
+  "../../network_data/Users.Locations-output/"
   )
 
 final_format_f10(
-  f10_Louvre_MIT_1_2018,
-  "f10_Louvre_MIT_1_2018.csv",
-  "../output/"
+  f10_Louvre_MIT_1_2018_1,
+  "f10_Louvre_MIT_1_2018_1.csv",
+  "../../network_data/Users.Locations-output/"
+  )
+
+final_format_f10(
+  f10_Louvre_MIT_1_2018_2,
+  "f10_Louvre_MIT_1_2018_2.csv",
+  "../../network_data/Users.Locations-output/"
   )
 ```
