@@ -80,24 +80,11 @@ const parse = {
 
     // BLUEPRINT
     parseGeometry: function(d) {
-        let floor = 0;
-        let floor_name = "RC - Level 0";
-        if (d.floor === "S1") {
-            floor = -1;
-            floor_name = "S1 - Level -1";
-        } else if (d.floor === "S2") {
-            floor = -2;
-            floor_name = "S2 - Level -2";
-        } else if (d.floor === "N1") {
-            floor = 1;
-            floor_name = "N1 - Level 1";
-        } else if (d.floor === "N2") {
-            floor = 2;
-            floor_name = "N2 - Level 2";
-        }
+        const floorInfo = parse.getNFloor(d.floor);
+
         return {
-            floor_n: floor,
-            floor: floor_name,
+            floor_n: floorInfo[0],
+            floor: floorInfo[1],
             type: d.type,
             path: d.d,
             fill_rule: d.fill_rule === null ? "inherit" : d.fill_rule
@@ -105,25 +92,11 @@ const parse = {
     },
 
     parseGeomRooms: function(d) {
-        let floor = 0;
-        let floor_name = "RC - Level 0";
-        if (d.floor === "S1") {
-            floor = -1;
-            floor_name = "S1 - Level -1";
-        } else if (d.floor === "S2") {
-            floor = -2;
-            floor_name = "S2 - Level -2";
-        } else if (d.floor === "N1") {
-            floor = 1;
-            floor_name = "N1 - Level 1";
-        } else if (d.floor === "N2") {
-            floor = 2;
-            floor_name = "N2 - Level 2";
-        }
+        const floorInfo = parse.getNFloor(d.floor);
 
         return {
-            floor_n: floor,
-            floor: floor_name,
+            floor_n: floorInfo[0],
+            floor: floorInfo[1],
             mRoom: +d.room,
             id_ap_3: +d.id_ap_3,
             x: +d.x,
@@ -182,11 +155,42 @@ const parse = {
             d.y_target = this_room_t.length > 0 ?
                 this_room_t[0].y :
                 NaN;
+
+            const sourceFloor = isNaN(d.y_source) ?
+                "" :
+                parse.getNFloor(d.floor.split(" - ")[0]);
+            const targetFloor = isNaN(d.y_target) ?
+                "" :
+                parse.getNFloor(d.main_floor_target.split(" - ")[0]);
+
+            d.sourceFloorN = sourceFloor[0];
+            d.targetFloorN = targetFloor[0];
         });
 
         return geom_links.filter(d =>
             d.mRoom_source >= 0 && d.mRoom_target >= 0
         );
+    },
+
+    getNFloor(thisFloor) {
+        let floor = 0;
+        let floor_name = "RC - Level 0";
+
+        if (thisFloor === "S1") {
+            floor = -1;
+            floor_name = "S1 - Level -1";
+        } else if (thisFloor === "S2") {
+            floor = -2;
+            floor_name = "S2 - Level -2";
+        } else if (thisFloor === "N1") {
+            floor = 1;
+            floor_name = "N1 - Level 1";
+        } else if (thisFloor === "N2") {
+            floor = 2;
+            floor_name = "N2 - Level 2";
+        }
+
+        return [floor, floor_name];
     },
 
     // OTHER

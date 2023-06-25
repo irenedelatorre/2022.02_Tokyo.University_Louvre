@@ -5,8 +5,9 @@
   }
 
 #blueprint {
-    width: 100%;
+    width: 74%;
     height: auto;
+    margin-top: 2em;
 }
 
 .ground {

@@ -139,8 +139,10 @@ nav a {
     text-transform: uppercase;
 }
 
-/* bar chart */
-#section-bar .visual, #section-network .visual {
+/* visuals */
+#section-bar .visual,
+#section-network .visual,
+#section-blueprint .visual {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
