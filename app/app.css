@@ -132,7 +132,7 @@ header {
 
 /* NAV */
 nav {
-    background-color: var(--black);
+    background-color: var(--ui-light);
     padding: 0.5625em 2em;
     display: flex;
     flex-direction: row;
@@ -140,7 +140,7 @@ nav {
 }
 
 nav a {
-    color: var(--white);
+    color: var(--ui_dark);
     font-weight: 700;
     font-size: 0.875em;
     letter-spacing: 0.1em;
@@ -149,7 +149,7 @@ nav a {
 }
 
 nav a:hover {
-    color: var(--ui-light);
+    color: var(--black);
 }
 
 /* visuals */
@@ -171,7 +171,7 @@ nav a:hover {
 footer {
     margin-top: 5.5em;
     padding: 29px 32px 32px;
-    background: var(--grey-subtle);
+    background: var(--ui-light);
     color: var(--black);
 }
 
