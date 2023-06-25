@@ -88,7 +88,6 @@ class blueprintClass {
     }
 
     drawFloorsIso() {
-        console.log("drawFloorsIso()")
         const scale = `scale(
             ${this.scaleIsoX},
             ${this.scaleIsoX * this.iso_ratio}
@@ -305,7 +304,11 @@ class blueprintClass {
             .attr("class", "label")
             .text(d => d.short)
             .attr("x", 0)
-            .attr("y", d => this.y_block_iso * (d.level - 2) * -1 + 50);
+            .attr("y", d => this.y_block_iso * (d.level - 2) * -1 + 50)
+            .style("font-weight", d => this.selected_level === d.name ?
+                "bold" :
+                "normal"
+            );
     }
 
     moveInIso(levels) {
@@ -366,7 +369,6 @@ class blueprintClass {
     }
 
     updateVisual(type, value, view_3d) {
-        console.log(type, value, view_3d)
         let prev = this.selected_level;
         let prev_iso = this.iso;
         this.iso = view_3d === "iso" ? true : false;

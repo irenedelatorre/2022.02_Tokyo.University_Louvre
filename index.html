@@ -16,8 +16,8 @@
     <link href="./app/blueprint/blueprint.css" rel="stylesheet"/>
 </head>
 <body>
-    <nav>
-        <a class="col-md-12" href="https://urbansciences.jp">
+    <nav id="top">
+        <a class="col-md-12" href="https://urbansciences.jp" target="_blank">
             The University of Tokyo | Urban Sciences Lab
         </a>
     </nav>
@@ -25,11 +25,11 @@
         <p class="description">
             Studying visitors movement's using WiFi Tracking data
         </p>
-        <h1>A promenade through the Louvre</h1>
+        <h1>A promenade through</br>the Louvre</h1>
         <p class="standfirst">
             WiFi tracking is a valuable tool used in various settings to 
             understand pedestrian behavior. This research employed WiFi 
-            tracking at the Louvre Museum for three months, from November 
+            tracking at the Louvre Museum for four months, from November 
             2017 to February 2018, to obtain the location of visitors and 
             make some observations.
         </p>    
@@ -54,7 +54,7 @@
                         </p>
                     </div>
                     <div class="item item-2">
-                        <svg width="4" height="4" viewBox="0 0 4 4" fill="none" 
+                        <svg width="2" height="2" viewBox="0 0 4 4" fill="none" 
                         xmlns="http://www.w3.org/2000/svg">
                             <path d="M2 4C3.10457 4 4 3.10457 4 2C4 0.89543 3.10457 0 2 0C0.89543 0 0 0.89543 0 2C0 3.10457 0.89543 4 2 4Z"/>
                         </svg>
@@ -154,7 +154,7 @@
                     <div class="item item-2">
                         <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g filter="url(#filter0_d_105_2069)">
-                                <circle cx="23" cy="23" r="8" fill="#ADADAD"/>
+                                <circle cx="23" cy="23" r="8" fill="var(--grey)"/>
                                 <circle cx="23" cy="23" r="8.75" stroke="white" stroke-width="1.5"/>
                             </g>
                             <defs>
@@ -259,12 +259,20 @@
                 </li>
             </ul>
         </div>
+        <div class="section" id="end">
+            <a href="#top"
+            class="btn btn-primary btn-lg active"
+            role="button"
+            aria-pressed="true">
+            Go back to top
+        </a>
+        </div>
     </div>
 
     <footer>
         <div class="container">
             <div class="col-md-1">
-                <a href="https://urbansciences.jp">
+                <a href="https://urbansciences.jp" target="_blank">
                     <img class="logo_usl" src="assets/img/usl_logo.svg">
                 </a>
             </div>
@@ -275,9 +283,11 @@
                 <p class="author">Irene de la Torre Arenas <span class="position">Visualization</span></p>
                 <p class="author">Yamauchi Mizuki <span class="position">????</span></p>
                 </br>
-                <a class="lab" href="https://urbansciences.jp">Urban Sciences Lab</a>
+                <a class="lab" href="https://urbansciences.jp" target="_blank">
+                    Urban Sciences Lab
+                </a>
                 </br>
-                <a href="https://urbansciences.jp">
+                <a href="https://urbansciences.jp" target="_blank">
                     <img class="logo_uni" src="assets/img/UnivOfTokyo_logo.svg">
                 </a>
             </div>

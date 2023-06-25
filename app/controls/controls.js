@@ -122,13 +122,4 @@ class checkbox {
                 "Hide unknown rooms"
             );
     }
-
-    extendAccordion() {
-        d3.selectAll(".accordion-button")
-            .on("click", function(d) {
-                console.log("clicked", this)
-            })
-    }
-
-
 }
