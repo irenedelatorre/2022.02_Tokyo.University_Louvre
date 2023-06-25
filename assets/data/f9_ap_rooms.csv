@@ -11,7 +11,7 @@
 32,11,"Richelieu","RC - Level 0",230,NA,"Near Eastern Antiquities",NA
 32,13,"Richelieu","RC - Level 0",236,NA,"Near Eastern Antiquities","Statue of Ebih-Il"
 32,14,"Richelieu","RC - Level 0",234,NA,"Near Eastern Antiquities",NA
-32,15,"Richelieu","RC - Level 0",NA,"Corridor",NA,NA
+32,15,"Richelieu","RC - Level 0",NA,"Stairs",NA,NA
 32,16,"Richelieu","RC - Level 0",233,NA,"Near Eastern Antiquities",NA
 33,20,"Sully","RC - Level 0",305,NA,"Near Eastern Antiquities",NA
 33,21,"Sully","RC - Level 0",304,NA,"Near Eastern Antiquities",NA
@@ -56,7 +56,7 @@
 50,83,"Denon","RC - Level 0",NA,"Stairs",NA,NA
 81,84,"Denon","RC - Level 0",400,NA,"Sculptures",NA
 81,85,"Denon","RC - Level 0",401,NA,"Sculptures",NA
-1,86,"Richelieu","RC - Level 0",NA,NA,NA,NA
+1,86,"Richelieu","RC - Level 0",NA,"Corridor",NA,NA
 30,87,"Richelieu","RC - Level 0",200,NA,"Sculptures",NA
 30,88,"Richelieu","RC - Level 0",201,NA,"Sculptures","Christ Detached from the Cross"
 30,89,"Richelieu","RC - Level 0",202,NA,"Sculptures",NA
@@ -75,14 +75,14 @@
 88,105,"Richelieu","N1 - Level 1",564,NA,"Decorative Arts",NA
 72,106,"Richelieu","N1 - Level 1",563,NA,"Decorative Arts",NA
 72,107,"Richelieu","N1 - Level 1",562,NA,"Decorative Arts",NA
-72,108,"Richelieu","N1 - Level 1",560,NA,"Decorative Arts",NA
 72,108,"Richelieu","N1 - Level 1",561,NA,"Decorative Arts",NA
+72,108,"Richelieu","N1 - Level 1",560,NA,"Decorative Arts",NA
 72,109,"Richelieu","N1 - Level 1",559,NA,"Decorative Arts",NA
 31,111,"Richelieu","N1 - Level 1",550,NA,"Decorative Arts",NA
 31,112,"Richelieu","N1 - Level 1",551,NA,"Decorative Arts",NA
 31,113,"Richelieu","N1 - Level 1",554,NA,"Decorative Arts",NA
 40,119,"Richelieu","N1 - Level 1",NA,"Stairs",NA,NA
-40,119,"Richelieu","RC - Level 0",NA,"Richelieu stairs 1",NA,NA
+40,119,"Richelieu","RC - Level 0",NA,"Stairs",NA,NA
 40,120,"Richelieu","N1 - Level 1",505,NA,"Decorative Arts",NA
 40,121,"Richelieu","N1 - Level 1",506,NA,"Decorative Arts",NA
 40,122,"Richelieu","N1 - Level 1",508,NA,"Decorative Arts",NA
@@ -90,34 +90,35 @@
 40,124,"Richelieu","N1 - Level 1",510,NA,"Decorative Arts",NA
 43,136,"Richelieu","N1 - Level 1",522,NA,"Decorative Arts",NA
 43,137,"Richelieu","N1 - Level 1",523,NA,"Decorative Arts",NA
-43,138,"Richelieu","N1 - Level 1",524,NA,"Decorative Arts",NA
 43,138,"Richelieu","N1 - Level 1",523,NA,"Decorative Arts",NA
+43,138,"Richelieu","N1 - Level 1",524,NA,"Decorative Arts",NA
 43,139,"Richelieu","N1 - Level 1",525,NA,"Decorative Arts",NA
+43,140,"Richelieu","N1 - Level 1",NA,NA,NA,NA
 43,141,"Richelieu","N1 - Level 1",526,NA,"Decorative Arts",NA
 43,142,"Richelieu","N1 - Level 1",527,NA,"Decorative Arts",NA
-31,151,"Richelieu","N1 - Level 1",503,NA,"Decorative Arts","The Virgin of Jeanne d’Evreux"
-31,151,"Richelieu","N1 - Level 1",504,NA,"Decorative Arts",NA
-31,151,"Richelieu","N1 - Level 1",502,NA,"Decorative Arts",NA
 31,151,"Richelieu","N1 - Level 1",501,NA,"Decorative Arts",NA
+31,151,"Richelieu","N1 - Level 1",503,NA,"Decorative Arts","The Virgin of Jeanne d’Evreux"
+31,151,"Richelieu","N1 - Level 1",502,NA,"Decorative Arts",NA
+31,151,"Richelieu","N1 - Level 1",504,NA,"Decorative Arts",NA
 31,154,"Richelieu","N1 - Level 1",539,NA,"Decorative Arts",NA
 31,155,"Richelieu","N1 - Level 1",540,NA,"Decorative Arts",NA
 31,156,"Richelieu","N1 - Level 1",NA,"Stairs",NA,NA
-31,156,"Richelieu","RC - Level 0",NA,NA,NA,NA
+31,156,"Richelieu","RC - Level 0",NA,"Stairs",NA,NA
 43,164,"Sully","N1 - Level 1",606,NA,"Decorative Arts",NA
 44,169,"Sully","N1 - Level 1",614,NA,"Decorative Arts",NA
 44,170,"Sully","N1 - Level 1",615,NA,"Decorative Arts",NA
 44,171,"Sully","N1 - Level 1",616,NA,"Decorative Arts",NA
-44,172,"Sully","N1 - Level 1",622,NA,"Decorative Arts",NA
 44,172,"Sully","N1 - Level 1",621,NA,"Decorative Arts",NA
+44,172,"Sully","N1 - Level 1",622,NA,"Decorative Arts",NA
 44,172,"Sully","N1 - Level 1",623,NA,"Decorative Arts",NA
 44,173,"Sully","N1 - Level 1",NA,"Stairs",NA,NA
-45,175,"Sully","N1 - Level 1",631,NA,"Decorative Arts",NA
 45,175,"Sully","N1 - Level 1",626,NA,"Decorative Arts",NA
-45,176,"Sully","N1 - Level 1",628,NA,"Decorative Arts",NA
+45,175,"Sully","N1 - Level 1",631,NA,"Decorative Arts",NA
 45,176,"Sully","N1 - Level 1",627,NA,"Decorative Arts",NA
+45,176,"Sully","N1 - Level 1",628,NA,"Decorative Arts",NA
 45,176,"Sully","N1 - Level 1",632,NA,"Decorative Arts",NA
-45,177,"Sully","RC - Level 0",NA,"Stairs",NA,NA
 45,177,"Sully","N1 - Level 1",NA,"Stairs",NA,NA
+45,177,"Sully","RC - Level 0",NA,"Stairs",NA,NA
 45,178,"Sully","N1 - Level 1",633,NA,"Egyptian Antiquities",NA
 45,179,"Sully","N1 - Level 1",634,NA,"Egyptian Antiquities",NA
 35,188,"Sully","N1 - Level 1",641,NA,"Egyptian Antiquities",NA
@@ -143,14 +144,17 @@
 48,208,"Sully","N1 - Level 1",NA,"Stairs",NA,NA
 48,209,"Sully","N1 - Level 1",600,NA,"History of the Louvre","The Pavillon de l’Horloge"
 48,210,"Sully","RC - Level 0",NA,"Stairs",NA,NA
-48,211,"Sully","RC - Level 0",NA,NA,NA,NA
+48,210,"Sully","N1 - Level 1",NA,"Corridor",NA,NA
+48,211,"Sully","RC - Level 0",NA,"Elevator",NA,NA
 48,211,"Sully","N1 - Level 1",601,NA,"Decorative Arts",NA
 56,213,"Sully","N1 - Level 1",603,NA,"Decorative Arts",NA
 56,214,"Sully","N1 - Level 1",604,NA,"Decorative Arts",NA
 50,228,"Denon","N1 - Level 1",NA,"Coffee Shop","Paintings",NA
+50,228,"Denon","RC - Level 0",NA,"Elevator",NA,NA
 50,229,"Denon","N1 - Level 1",NA,"Stairs","Paintings",NA
 50,230,"Denon","N1 - Level 1",715,NA,"Paintings",NA
 51,235,"Denon","N1 - Level 1",717,NA,"Paintings",NA
+51,235,"Denon","RC - Level 0",NA,"Elevator",NA,NA
 51,236,"Denon","N1 - Level 1",718,NA,"Paintings","The Clubfoot"
 51,237,"Denon","N1 - Level 1",720,NA,NA,NA
 51,238,"Denon","N1 - Level 1",721,NA,NA,NA
@@ -183,6 +187,7 @@
 55,288,"Richelieu","N2 - Level 2",NA,"Corridor",NA,NA
 55,289,"Richelieu","N2 - Level 2",830,NA,"Paintings",NA
 55,290,"Richelieu","N2 - Level 2",831,NA,"Paintings",NA
+53,302,"Richelieu","N1 - Level 1",NA,"Elevator",NA,NA
 53,302,"Richelieu","N2 - Level 2",NA,"Scalators",NA,NA
 53,303,"Richelieu","N2 - Level 2",800,NA,"Paintings",NA
 30,305,"Richelieu","N2 - Level 2",836,NA,"Paintings",NA
@@ -196,7 +201,7 @@
 96,314,"Richelieu","N2 - Level 2",845,NA,"Paintings",NA
 96,315,"Richelieu","N2 - Level 2",846,NA,"Paintings",NA
 55,316,"Sully","N2 - Level 2",909,NA,"Paintings",NA
-56,317,"Sully","N2 - Level 2",NA,NA,"Paintings",NA
+56,317,"Sully","N2 - Level 2",NA,"Corridor","Paintings",NA
 56,318,"Sully","N2 - Level 2",908,NA,"Paintings",NA
 56,319,"Sully","N2 - Level 2",910,NA,"Paintings",NA
 57,344,"Sully","N2 - Level 2",933,NA,"Paintings",NA
@@ -218,27 +223,34 @@
 58,362,"Sully","N2 - Level 2",952,NA,"Paintings",NA
 47,363,"Sully","N2 - Level 2",948,NA,"Paintings",NA
 58,364,"Sully","N2 - Level 2",NA,"Stairs","Paintings",NA
+58,364,"Sully","N1 - Level 1",NA,"Stairs",NA,NA
 58,365,"Sully","N2 - Level 2",900,NA,"History of the Louvre","The Pavillon de l’Horloge"
 59,366,"Sully","N2 - Level 2",901,NA,"Paintings",NA
 58,367,"Sully","N2 - Level 2",NA,"Stairs","Paintings",NA
-58,368,"Sully","RC - Level 0",NA,NA,NA,NA
+58,367,"Sully","N1 - Level 1",NA,"Stairs",NA,NA
 58,368,"Sully","N2 - Level 2",902,NA,"Paintings",NA
+58,368,"Sully","RC - Level 0",NA,"Elevator",NA,NA
+58,368,"Sully","N1 - Level 1",NA,"Elevator",NA,NA
 56,369,"Sully","N2 - Level 2",903,NA,"Paintings",NA
 56,370,"Sully","N2 - Level 2",904,NA,"Paintings",NA
 56,371,"Sully","N2 - Level 2",905,NA,"Paintings",NA
 56,372,"Sully","N2 - Level 2",906,NA,"Paintings",NA
 80,383,"Denon","S1 - Level -1",180,NA,"Near Eastern and Egyptian Art",NA
 38,384,"Denon","S1 - Level -1",NA,NA,"Near Eastern and Egyptian Art",NA
-38,385,"Denon","S1 - Level -1",NA,NA,"Near Eastern and Egyptian Art",NA
+38,385,"Denon","S1 - Level -1",NA,"Elevator","Near Eastern and Egyptian Art",NA
+29,386,"Denon","RC - Level 0",NA,"Stairs",NA,NA
 29,386,"Denon","S1 - Level -1",183,NA,"Near Eastern and Egyptian Art","‘L’Européenne’"
 80,387,"Denon","S1 - Level -1",185,NA,"Islamic Art","Panel depicting a poetry contest"
 16,394,"Richelieu","S1 - Level -1",102,NA,"Sculptures",NA
 96,399,"Richelieu","S1 - Level -1",101,NA,"The Petite Galerie",NA
 9,400,"Richelieu","N2 - Level 2",NA,"Elevator",NA,NA
-31,403,"Sully","S1 - Level -1",131,NA,"Cabinet of Prints and Drawings",NA
+9,400,"Richelieu","N1 - Level 1",NA,"Elevator",NA,NA
+9,400,"Richelieu","S1 - Level -1",NA,"Stairs",NA,NA
 31,403,"Richelieu","RC - Level 0",NA,"Richelieu square",NA,NA
+31,403,"Sully","S1 - Level -1",131,NA,"Cabinet of Prints and Drawings",NA
 31,404,"Sully","S1 - Level -1",130,NA,"Cabinet of Prints and Drawings",NA
-21,405,"Sully","S1 - Level -1",NA,"Stairs",NA,NA
+21,405,"Sully","S1 - Level -1",NA,"Corridor",NA,NA
+21,405,"Sully","RC - Level 0",NA,"Stairs",NA,NA
 20,407,"Sully","S1 - Level -1",132,NA,"History of the Louvre",NA
 22,408,"Sully","S1 - Level -1",133,NA,"History of the Louvre",NA
 NA,409,"Sully","S1 - Level -1",136,NA,"History of the Louvre",NA
@@ -247,9 +259,10 @@ NA,410,"Sully","S1 - Level -1",137,NA,"History of the Louvre",NA
 24,412,"Sully","S1 - Level -1",134,NA,"History of the Louvre",NA
 24,413,"Sully","S1 - Level -1",NA,"Elevator",NA,NA
 28,416,"Denon","S2 - Level -2",186,NA,NA,NA
+28,416,"Sully","S1 - Level -1",NA,"Elevator",NA,NA
 39,417,"Denon","N1 - Level 1",NA,"Stairs",NA,NA
-39,417,"Denon","RC - Level 0",NA,NA,NA,NA
-39,418,"Denon","RC - Level 0",424,NA,"Arts of Africa, Asia, Oceania and the Americas",NA
+39,417,"Denon","RC - Level 0",NA,"Corridor",NA,NA
+39,418,"Denon","RC - Level 0",424,"Corridor","Arts of Africa, Asia, Oceania and the Americas",NA
 39,419,"Denon","RC - Level 0",424,NA,"Arts of Africa, Asia, Oceania and the Americas",NA
 39,426,"Denon","RC - Level 0",431,NA,"Arts of Africa, Asia, Oceania and the Americas",NA
 39,427,"Denon","RC - Level 0",432,NA,"Arts of Africa, Asia, Oceania and the Americas",NA
