@@ -101,7 +101,8 @@ rooms <- merge(f9_ap_rooms, rooms_geom, by="Museum_room", all=T)
 
 ### Match with network information (nodes)
 
-We will be drawing lines between the rooms. The `node` data frame is created in `R/network_00.R`.
+We will be drawing lines between the rooms. The
+`node` data frame is created in `R/network_00.R`.
 
 #### All results (total)
 
@@ -109,7 +110,7 @@ We will be drawing lines between the rooms. The `node` data frame is created in 
 source("../R/network_01_agg.R")
 source("../R/network_00.R")
 
-all_agg_network(path = "../output/")
+all_agg_network(path = "../assets/data/")
 
 ```
 
@@ -117,7 +118,7 @@ You can also import the final result:
 
 ```{r}
 
-nodes <- read_csv("../output/network_nodes_agg_all.csv")
+nodes <- read_csv("../assets/data/network_nodes_agg_all.csv")
 
 rooms_nodes <- merge(rooms, nodes, by="id_ap_3", all=T) %>%
   select(!c("date", "total_duration_sec"))
@@ -155,7 +156,8 @@ head(rooms_nodes)
 
 ## Match geometry with links
 
-We will be drawing lines between the rooms. We need to provide the x and y information from the SVG to the links dataframe.
+We will be drawing lines between the rooms. We need to provide the x and y 
+information from the SVG to the links dataframe.
 
 `links` is created through `R/network_00.R`.
 
@@ -166,12 +168,15 @@ We will be drawing lines between the rooms. We need to provide the x and y infor
 You can also load the data by importing the exported data frame:
 
 ```{r}
-links <- read_csv("../output/network_agg_all.csv")
+links <- read_csv("../assets/data/network_agg_all.csv")
 ```
 
-This dataframe doesn't include the Museum room, but it has `source` and `target` as id_ap_3. If we match `links` with `rooms` we can get all the information we need.
+This dataframe doesn't include the Museum room, but it has `source` and 
+`target` as id_ap_3. If we match `links` with `rooms` we can get all 
+the information we need.
 
-The difficulty is that we have several wifipoints with the same id in more than one room.
+The difficulty is that we have several wifipoints with the same id 
+in more than one room.
 
 ```{r}
 
@@ -237,7 +242,7 @@ filtered_links <- links_rooms %>%
   drop_na(source_x) %>%
   drop_na(target_x)
 
-write.csv(filtered_links, file = "../output/links_geom.csv", row.names = FALSE)
+write.csv(filtered_links, file = "../assets/data/links_geom.csv", row.names = FALSE)
 
 write.csv(
   links_rooms,

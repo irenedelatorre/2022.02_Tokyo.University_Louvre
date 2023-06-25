@@ -14,11 +14,12 @@
 #'
 #' @examples
 #' 
-create_f8 <- function(f5_a, f5_b, f5_c, f6, f12) {
+create_f8 <- function(f5_a, f5_b, f5_c, f5_d, f6, f12) {
   f5_Louvre_MIT <- rbind(
     f5_a,
     f5_b,
-    f5_c) %>%
+    f5_c,
+    f5_d) %>%
     rename(
       user_id = ID,
       id_ap_2 = ACCESS_POINT_HOSTNAME,

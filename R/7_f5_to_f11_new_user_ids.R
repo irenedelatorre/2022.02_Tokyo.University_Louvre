@@ -5,17 +5,15 @@
 #' @param f5_a user data frame (a f5)
 #' @param f5_b user data frame (a f5)
 #' @param f5_c user data frame (a f5)
+#' @param f5_d user data frame (a f5)
 #'
 #' @return data frame with new user id
 #' @export
 #'
 #' @examples
 
-create_f11 <- function(f5_a, f5_b, f5_c) {
-  f5_Louvre_MIT <- rbind(
-    f5_a,
-    f5_b,
-    f5_c) %>%
+create_f11 <- function(f5_a, f5_b, f5_c, f5_d) {
+  f5_Louvre_MIT <- rbind(f5_a, f5_b, f5_c, f5_d) %>%
     rename(
       user_id = ID,
       id_ap_2 = ACCESS_POINT_HOSTNAME,

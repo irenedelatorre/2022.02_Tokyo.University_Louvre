@@ -86,16 +86,18 @@ final_format_f10 <- function(data, name, path = "output/") {
 #' @param f10_1 user data frame (a f10)
 #' @param f10_2 user data frame (a f10)
 #' @param f10_3 user data frame (a f10)
+#' @param f10_4 user data frame (a f10)
 #'
 #' @return data frame with new mac id
 #' @export
 #'
 #' @examples
 
-summary_f10 <- function(f10_1, f10_2, f10_3) {
+summary_f10 <- function(f10_1, f10_2, f10_3, f10_4) {
   f5_total <- nrow(f10_1) + 
     nrow(f10_2) + 
-    nrow(f10_3)
+    nrow(f10_3) + 
+    nrow(f10_4)
   
   f10_1 <- f10_1 %>%
     drop_na(id_ap_3)
@@ -105,15 +107,20 @@ summary_f10 <- function(f10_1, f10_2, f10_3) {
   
   f10_3 <- f10_3 %>%
     drop_na(id_ap_3)
-  
+
+  f10_4 <- f10_4 %>%
+    drop_na(id_ap_3)
+
   message(
     paste0(
       "Match rooms, ap_ids and users: ",
-      nrow(f10_1) + nrow(f10_2) + nrow(f10_3),
+      nrow(f10_1) + nrow(f10_2) + nrow(f10_3) + nrow(f10_4),
       " out of ",
       f5_total,
       " movements matched (",
-      round(100 * (nrow(f10_1) + nrow(f10_2) + nrow(f10_3)) / f5_total),
+      round(
+        100 * (nrow(f10_1) + nrow(f10_2) + nrow(f10_3) + nrow(f10_4)) /
+          f5_total),
       "%)"
     )
   )

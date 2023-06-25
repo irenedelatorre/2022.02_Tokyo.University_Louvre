@@ -51,10 +51,11 @@ all_agg_network <- function(path = "output/") {
   message("Importing files")
   file_1 <- read_csv(paste0(path, "f10_Louvre_MIT_1_2017_11.csv"))
   file_2 <- read_csv(paste0(path, "f10_Louvre_MIT_1_2017_12.csv"))
-  file_3 <- read_csv(paste0(path, "f10_Louvre_MIT_1_2018.csv"))
+  file_3 <- read_csv(paste0(path, "f10_Louvre_MIT_1_2018_1.csv"))
+  file_4 <- read_csv(paste0(path, "f10_Louvre_MIT_1_2018_2.csv"))
   
   message("Binding files")
-  data <- rbind(file_1, file_2, file_3)
+  data <- rbind(file_1, file_2, file_3, file_4)
   
   message("Creating network data")
   network <- create_agg_network(data) %>%
