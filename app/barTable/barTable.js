@@ -6,7 +6,7 @@ class barTableClass {
         this.options = item.options;
         this.id = item.id;
         this.bar_head = item.bar_head;
-        this.format = d3.format(",");
+        this.format = d3.format(",.2r");
         this.margin = {t: 2, b: 2};
         this.headers = item.headers;
         this.barIndex = item.barIndex;
@@ -95,7 +95,7 @@ class barTableClass {
             })
             .join("td")
             .attr("class", d => d.class)
-            .html(d => d.class === "visitors_number" ?
+            .html(d => d.class.split(" ")[0] === "visitors_number" ?
                 this.format(d.text) :
                 d.text
             );

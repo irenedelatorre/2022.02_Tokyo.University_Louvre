@@ -5,8 +5,25 @@
   }
 
 #blueprint {
-    width: 100%;
+    width: 74%;
     height: auto;
+    margin-top: 2em;
+    display: flex;
+    justify-content: center;
+}
+
+#blueprint .iso_svg {
+    height: 90vh;
+    min-height: 1000px;
+}
+
+#blueprint .top_svg {
+    width: 90%;
+}
+
+#blueprint .label {
+    font-size: 2em;
+    fill: var(--grey-600)
 }
 
 .ground {
