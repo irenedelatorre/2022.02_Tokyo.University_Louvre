@@ -103,7 +103,7 @@ class blueprintClass {
             .attr("id", (d) => `level_${d[0]}`);
 
         // ground
-        if (this.selected_level === "All") {
+        if (this.selected_level === "All" && this.iso) {
             this.drawGeom("ground");
             this.drawGeom("stairs");
             this.drawGeom("rooms_blueprint");
@@ -299,12 +299,11 @@ class blueprintClass {
     }
 
     revertIso() {
-        this.plotFloors
-            .attr("transform", `translate(0, 0) scale(1, 1) rotate(0)`)
+        this.plotFloors.remove();
     }
 
     checkHide() {
-        if(this.hideChange){
+        if(!this.iso){
             this.plotFloors
                 .selectAll(".link_change")
                 .style("display", "none");
@@ -333,15 +332,18 @@ class blueprintClass {
         if (type === "checkbox") {
             prev = this.selected_level;
             this.selected_level = value;
-            this.createSVG();
-            this.drawFloors();
 
             if (value === "All") {
+                this.createSVG();
+                this.drawFloors();
                 this.toIso();
             } else if (value !== "All" && prev === "All") {
                 this.revertIso();
+                this.drawFloors();
+            } else {
+                this.drawFloors();
             }
-            
+             
         } else if (type === "toggle") {
             this.hideChange = value;
             this.checkHide();
