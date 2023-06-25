@@ -9,8 +9,6 @@
     <!-- Google fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400&family=Noto+Serif:wght@700&display=swap" rel="stylesheet">
-    <!-- <link href="./libraries/mapbox-leaflet/leaflet.zoomhome.css" rel="stylesheet"/> -->
-    <!-- <link href="./libraries/mapbox-leaflet/mapbox.js-bower-3.1.1/mapbox.css" rel="stylesheet"/> -->
     <link href="./app/app.css" rel="stylesheet"/>
     <link href="./app/network/network.css" rel="stylesheet"/>
     <link href="./app/controls/controls.css" rel="stylesheet"/>
@@ -70,10 +68,64 @@
             <div class="visual">
                 <div id="blueprint" class="plot"></div>
                 <div class="non-sticky">
-                    <div class="controls-wrapper">
-                        <div class="controls">
-                            <label>Highlight a specific level</label>
-                            <form id="blueprint-controls"></form>
+                    <div class="controls-wrapper accordion"
+                        id="accordionBlueprint">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading3D">
+                                <button
+                                    class="accordion-button"
+                                    type="button"
+                                    value="3d"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapse3D"
+                                    aria-expanded="true"
+                                    aria-controls="collapse3D">
+                                    Isometric view
+                                </button>
+                            </h2>
+                            <div
+                                id="collapse3D"
+                                class="accordion-collapse collapse show"
+                                aria-labelledby="heading3D"
+                                data-bs-parent="#accordionBlueprint">
+                                <div class="accordion-body">
+                                    <p class="small">
+                                        Movements across floors available.
+                                    </p>
+                                    <p>
+                                        Highlight trajectories that start
+                                        in a given floor.
+                                    </p>
+                                    <form id="blueprint-controls-3d"></form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="headingTop">
+                            <button
+                                class="accordion-button collapsed"
+                                type="button"
+                                value="top"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseTop"
+                                aria-expanded="false"
+                                aria-controls="collapseTop">
+                                Top view
+                            </button>
+                          </h2>
+                          <div
+                            id="collapseTop"
+                            class="accordion-collapse collapse"
+                            aria-labelledby="headingTop"
+                            data-bs-parent="#accordionBlueprint">
+                            <div class="accordion-body">
+                                <p class="small">
+                                    Only movements within one floor
+                                </p>
+                                <p>Select floor</p>
+                                <form id="blueprint-controls-top"></form>
+                            </div>
+                          </div>
                         </div>
                     </div>
                 </div>
@@ -231,6 +283,7 @@
             </div>
         </div>
     </footer>
+    <script src="./libraries/bootstrap/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     <script src="./libraries/d3/d3.v7.min.js"></script>
     <script src="./libraries/d3/forceInABox.js"></script>
     <script src="./libraries/p5/p5.min.js"></script>

@@ -12,8 +12,7 @@ class blueprintClass {
         this.scaleColor = item.scaleColor;
         this.options = item.options;
         this.selected_level = "All";
-
-        console.log(this.links)
+        this.iso = true;
     }
 
     async execute(){
@@ -21,19 +20,27 @@ class blueprintClass {
         // Code for the first class
         this.init();
         this.createSVG();
-        this.drawFloors();
 
-        if (this.selected_level === "All") {
+        if (this.iso) {
+            this.drawFloorsIso();
             this.toIso();
         } else {
-            this.revertIso();
+            this.drawFloors();
         }
 
         // create the controls
-        const checkbox_network = new checkbox({
+        const checkbox_network_iso = new checkbox({
             scaleColor: this.scaleColor,
             options: this.options,
-            id: `${this.id}-controls`,
+            id: `${this.id}-controls-3d`,
+            type: this.id,
+            module: this
+        })
+
+        const checkbox_network_top = new checkbox({
+            scaleColor: this.scaleColor,
+            options: this.options,
+            id: `${this.id}-controls-top`,
             type: this.id,
             module: this
         })
@@ -53,17 +60,14 @@ class blueprintClass {
         this.scaleStroke = d3
             .scaleLinear()
             .domain(d3.extent(this.links, (d) => d.n_total))
-            .range([0.01, 15]);
+            .range([0.01, 30]);
 
         // options for isometric view
-        this.iso = true;
         this.iso_ratio = 0.7;
         this.scaleIsoX = 0.7; // scale when transforming into ISOMETRIC
         this.h_floor_iso = 822 * this.scaleIsoX; // height of a floor
         this.padding_iso = 0 * this.scaleIsoX;
         this.y_block_iso = this.h_floor_iso + this.padding_iso;
-
-        console.log(this.y_block_iso)
     }
 
     createSVG() {
@@ -76,52 +80,56 @@ class blueprintClass {
         const steps = this.floors.length - 1;
         const newHeight = 500;
         this.plot
-            .attr("viewBox", this.selected_level === "All" ?
+            .attr("class", this.iso ? "iso_svg" : "top_svg")
+            .attr("viewBox", this.iso ?
                 `0 0 ${this.size_w} ${this.size_h + newHeight * (steps)}` :
                 `0 0 ${this.size_w} ${this.size_h}`)
             .attr("xmlns", "http://www.w3.org/2000/svg");
     }
 
+    drawFloorsIso() {
+        console.log("drawFloorsIso()")
+        const scale = `scale(
+            ${this.scaleIsoX},
+            ${this.scaleIsoX * this.iso_ratio}
+        )`;
+
+        // draw all floors
+        this.plotFloors = this.plot
+            .selectAll(".g-levels")
+            .data(this.floors, d => d[0])
+            .join("g")
+            .attr("class", "g-levels")
+            .attr("id", (d) => `level_${d[0]}`);
+
+        this.drawGeom("ground");
+        this.drawGeom("stairs");
+        this.drawGeom("rooms_blueprint");
+        this.drawLinks_sameFloor("no_change");
+        this.drawLinks("down");
+        this.drawLinks("up");
+        this.drawRooms();
+        this.drawLabels("labels");
+    }
+
     drawFloors() {
-        const this_level = this.selected_level === "All" ?
-            this.floors :
-            this.floors.filter((e) => 
-                e[0] === this.selected_level
+        const this_level = this.floors.filter((e) => 
+            e[0] === this.selected_level
         );
-
-        const range = this.selected_level === "All" ?
-            [0.01, 30] :
-            [0.01, 30];
-
-        this.scaleStroke = this.scaleStroke.range(range);
 
         this.plotFloors = this.plot
             .selectAll(".g-levels")
             .data(this_level, d => d[0])
             .join("g")
             .attr("class", "g-levels")
-            .attr("id", (d) => `level_${d[0]}`);
+            .attr("id", (d) => `level_${d[0]}`)
+            .attr("transform", "translate(0, 0) scale(1)");
 
-        // ground
-        if (this.selected_level === "All" && this.iso) {
-            this.drawGeom("ground");
-            this.drawGeom("stairs");
-            this.drawGeom("rooms_blueprint");
-            this.drawLinks_sameFloor("no_change");
-            this.drawLinks("down");
-            this.drawLinks("up");
-            this.drawRooms();
-        } else if (this.selected_level !== "All"){
-            this.drawGeom("ground");
-            this.drawGeom("stairs");
-            this.drawGeom("rooms_blueprint");
-            this.drawLinks_sameFloor("no_change");
-            this.drawRooms();
-
-            d3.selectAll(".movements_up").remove();
-            d3.selectAll(".movements_down").remove();
-        }
-
+        this.drawGeom("ground");
+        this.drawGeom("stairs");
+        this.drawGeom("rooms_blueprint");
+        this.drawLinks_sameFloor("no_change");
+        this.drawRooms();
     }
 
     drawGeom(name) {
@@ -134,14 +142,13 @@ class blueprintClass {
         g.selectAll("path")
             .data((d) => d[1].filter((e) => e.type === name))
             .join("path")
-            .attr("class", this.selected_level === "All" ? `iso ${name}` : name)
+            .attr("class", this.iso ? `iso ${name}` : name)
             .attr("id", (d) => `${d.floor}_${name}`)
             .attr("d", (d) => d.path)
             .attr("fill-rule", (d) => d.fill_rule);
       }
 
     drawRooms() {
-        console.log(this.rooms)
         this.plotFloors
             .selectAll(".rooms")
             .data(d => [d[1][0].floor])
@@ -150,7 +157,7 @@ class blueprintClass {
             .selectAll(".room")
             .data((d) => this.rooms.filter((e) => e.floor === d))
             .join("circle")
-            .style("fill", d=> d.mRoom === 933 || d.mRoom === 330 ? "red" : "grey")
+            .style("fill", d=> d.mRoom === 225 || d.mRoom === 130 ? "red" : "grey")
             .attr("class", d => (d.id_ap_3 >= 0 ?
                 "room r_known" :
                 "room r_unknown"
@@ -170,22 +177,21 @@ class blueprintClass {
         // or iso, but same level
         this.plotFloors
             .selectAll(`.movements_${flow}`)
-            .data(d => [d[1][0].floor])
+            .data(d => {
+                if (this.selected_level !== "All" &&
+                    d[1][0].floor !== this.selected_level) {
+                        return "";
+                    } else {
+                        return [d[1][0].floor];
+                    }
+            })
             .join("g")
             .attr("class", `movements movements_${flow}`)
             .selectAll(".link")
-            .data(d => links.filter((e) => e.floor === d))
+            .data(d => links.filter((e) => e.floor === d && !e.change_floor))
             .join("line")
-            .attr("class", d => d.change_floor ?
-                `link link_change ${d.mRoom_source} ${d.mRoom_target}` :
-                `link ${d.mRoom_source} ${d.mRoom_target}`
-            )
+            .attr("class", d => `link ${d.mRoom_source} ${d.mRoom_target}`)
             .attr("stroke", (d) => this.scaleColor(d.floor))
-            .attr("stroke-dasharray", d => d.change_floor ?
-                this.scaleStroke(d.n_total) :
-                0
-            )
-            // .attr("stroke-opacity", d => d.change_floor ? 0.5 : 1)
             .attr("x1", (d) => d.x_source)
             .attr("x2", (d) => d.x_target)
             .attr("y1", (d) => d.y_source)
@@ -216,8 +222,17 @@ class blueprintClass {
                             e.main_floor,
                             e.main_floor_target
                         );
+
+                        let match = true;
+                        if (this.selected_level !== "All") {
+                            match = e.main_floor === this.selected_level ?
+                                true :
+                                false;
+                        }
+
                         return levels.source > levels.target &&
-                            e.main_floor_target === d;
+                            e.main_floor_target === d &&
+                            match;
                     });
 
                 } else if (flow === "up") {
@@ -227,10 +242,19 @@ class blueprintClass {
                             e.main_floor,
                             e.main_floor_target
                         );
+
+                        let match = true;
+                        if (this.selected_level !== "All") {
+                            match = e.main_floor === this.selected_level ?
+                                true :
+                                false;
+                        }
                         return levels.source < levels.target &&
-                            e.main_floor === d;
+                            e.main_floor === d &&
+                            match;
                     });
                 }
+
 
                 return links;
             })
@@ -266,7 +290,23 @@ class blueprintClass {
                 }
             })
             .style("stroke-width", (d) => this.scaleStroke(d.n_total));
-      }
+    }
+
+    drawLabels(name) {
+        const g = this.plot
+            .selectAll(`.${name}`)
+            .data([name])
+            .join("g")
+            .attr("class", name);
+
+        g.selectAll(".label")
+            .data(this.options.filter(d => d.level !== "All"))
+            .join("text")
+            .attr("class", "label")
+            .text(d => d.short)
+            .attr("x", 0)
+            .attr("y", d => this.y_block_iso * (d.level - 2) * -1 + 50);
+    }
 
     moveInIso(levels) {
         const dif_levels = Math.abs(levels.target - levels.source);
@@ -284,7 +324,6 @@ class blueprintClass {
     }
 
     toIso() {
-        this.iso = true;
         const scale = `scale(
             ${this.scaleIsoX},
             ${this.scaleIsoX * this.iso_ratio}
@@ -326,27 +365,34 @@ class blueprintClass {
         }
     }
 
-    updateVisual(type, value) {
-        let prev;
+    updateVisual(type, value, view_3d) {
+        console.log(type, value, view_3d)
+        let prev = this.selected_level;
+        let prev_iso = this.iso;
+        this.iso = view_3d === "iso" ? true : false;
+        this.selected_level = value;
 
-        if (type === "checkbox") {
-            prev = this.selected_level;
-            this.selected_level = value;
+        // if view before top and now iso
+        if (!prev_iso && this.iso) {
+            this.createSVG();
+        // if before iso and now top
+        } else if (prev_iso && !this.iso) {
+            this.createSVG();
+            this.plot.selectAll(".movements_up").remove();
+            this.plot.selectAll(".movements_down").remove();
+            this.plot.selectAll(".labels").remove();
+        }
 
-            if (value === "All") {
-                this.createSVG();
-                this.drawFloors();
-                this.toIso();
-            } else if (value !== "All" && prev === "All") {
-                this.revertIso();
-                this.drawFloors();
-            } else {
-                this.drawFloors();
-            }
-             
-        } else if (type === "toggle") {
-            this.hideChange = value;
-            this.checkHide();
+        if (this.iso) {
+            this.drawFloorsIso();
+            
+        } else {
+            this.drawFloors();
+        }
+
+        // if view before top and now iso -- call at the end only
+        if (!prev_iso && this.iso) {
+            this.toIso();
         }
     }
 }

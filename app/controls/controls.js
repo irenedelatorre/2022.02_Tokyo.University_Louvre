@@ -8,28 +8,76 @@ class checkbox {
         this.select = d3.select(`#${this.id}`);
 
         this.createCheckbox();
-        this.createToggle();
-
         // send information to visual
         this.checkbox.on("change", function() {
-             item.module.updateVisual("checkbox", this.value);
+            let view_3d = "";
+
+            if(item.id === "blueprint-controls-3d") {
+                view_3d = "iso";
+            }
+                item.module.updateVisual("checkbox", this.value, view_3d);
         });
 
-        this.toggle.on("change", function() {
-            const isChecked = d3.select(this).property("checked");
-            if (isChecked) {
-                // Perform actions when the toggle is ON
-                item.module.updateVisual("toggle", true);
-            } else {
-                item.module.updateVisual("toggle", false)
-            }
-        })
+        if (this.type !== "blueprint") {
+            this.createToggle();
+            this.toggle.on("change", function() {
+                const isChecked = d3.select(this).property("checked");
+                if (isChecked) {
+                    item.module.updateVisual("toggle", true);
+                } else {
+                    item.module.updateVisual("toggle", false)
+                }
+            })
+        } else {
+            d3.selectAll(".accordion-button")
+                .on("click", function(d) {
+                    let selected = "";
+
+                    const id = this.value === "top" ?
+                        "blueprint-controls-top" :
+                        "blueprint-controls-3d";
+
+                    const otherID = this.value === "top" ?
+                        "blueprint-controls-3d" :
+                        "blueprint-controls-top";
+
+                    const this_form = document.getElementById(id);
+
+                    const other = d3.select(`#${otherID}`)
+                        .selectAll("input");
+                        
+                    other.each(function(){
+                        var isChecked = d3.select(this).property("checked");
+                        selected = isChecked ?
+                            d3.select(this).property("value") :
+                            selected;
+                    });
+
+                    const value = selected === "All" ?
+                        item.options[1].name :
+                        selected;
+
+                    this_form.querySelector(
+                        `input[value="${value}"]`
+                    ).checked = true;
+                    
+                    const view_3d = this.value  === "top" ?
+                        "top" :
+                        "iso";
+
+                    item.module.updateVisual("checkbox", value, view_3d);
+                })
+        }
+
     }
 
     createCheckbox() {
         this.checkboxes = this.select
             .selectAll(".levels")
-            .data(this.options)
+            .data(this.id !== "blueprint-controls-top" ?
+                this.options :
+                this.options.filter(d => d.level !== "All")
+            )
             .enter()
             .append("label")
             .attr("class", d => d.level === "All" ? "" : "levels");
@@ -74,4 +122,13 @@ class checkbox {
                 "Hide unknown rooms"
             );
     }
+
+    extendAccordion() {
+        d3.selectAll(".accordion-button")
+            .on("click", function(d) {
+                console.log("clicked", this)
+            })
+    }
+
+
 }
