@@ -39,6 +39,12 @@
     opacity: 0.9;
 }
 
-.movements line {
+#blueprint .movements line {
     mix-blend-mode: multiply;
 }
+
+@-moz-document url-prefix() {
+    #blueprint .movements line  {
+        mix-blend-mode: inherit;
+    }
+  }
