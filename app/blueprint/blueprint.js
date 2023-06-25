@@ -11,13 +11,9 @@ class blueprintClass {
         this.ratio = Math.round((100 * this.size_h) / this.size_w) / 100;
         this.scaleColor = item.scaleColor;
         this.options = item.options;
-        this.iso = true;
-        this.iso_trans = 0;
-        this.h_iso_g = -350;
-        this.padding_iso_g = -150;
-        this.y_iso = this.h_iso_g + this.padding_iso_g;
-        this.scaleIsoX = 0.6;
         this.selected_level = "All";
+
+        console.log(this.links)
     }
 
     async execute(){
@@ -58,6 +54,16 @@ class blueprintClass {
             .scaleLinear()
             .domain(d3.extent(this.links, (d) => d.n_total))
             .range([0.01, 15]);
+
+        // options for isometric view
+        this.iso = true;
+        this.iso_ratio = 0.7;
+        this.scaleIsoX = 0.7; // scale when transforming into ISOMETRIC
+        this.h_floor_iso = 822 * this.scaleIsoX; // height of a floor
+        this.padding_iso = 0 * this.scaleIsoX;
+        this.y_block_iso = this.h_floor_iso + this.padding_iso;
+
+        console.log(this.y_block_iso)
     }
 
     createSVG() {
@@ -70,11 +76,6 @@ class blueprintClass {
         const steps = this.floors.length - 1;
         const newHeight = 500;
         this.plot
-            .attr("width", this.w)
-            .attr("height", this.selected_level === "All" ? 
-                (this.w * this.ratio + 220 * steps) : 
-                (this.w * this.ratio)
-            )
             .attr("viewBox", this.selected_level === "All" ?
                 `0 0 ${this.size_w} ${this.size_h + newHeight * (steps)}` :
                 `0 0 ${this.size_w} ${this.size_h}`)
@@ -140,6 +141,7 @@ class blueprintClass {
       }
 
     drawRooms() {
+        console.log(this.rooms)
         this.plotFloors
             .selectAll(".rooms")
             .data(d => [d[1][0].floor])
@@ -148,6 +150,7 @@ class blueprintClass {
             .selectAll(".room")
             .data((d) => this.rooms.filter((e) => e.floor === d))
             .join("circle")
+            .style("fill", d=> d.mRoom === 933 || d.mRoom === 330 ? "red" : "grey")
             .attr("class", d => (d.id_ap_3 >= 0 ?
                 "room r_known" :
                 "room r_unknown"
@@ -265,53 +268,66 @@ class blueprintClass {
             .style("stroke-width", (d) => this.scaleStroke(d.n_total));
       }
 
-      moveInIso(levels) {
-        // hard coded 
-        const extra = levels.target > levels.source ?
-            -1150 * this.scaleIsoX :
-            -1150 * this.scaleIsoX;
+    moveInIso(levels) {
         const dif_levels = Math.abs(levels.target - levels.source);
-        console.log(levels, dif_levels)
-        const trans_y = this.y_iso + extra * dif_levels
+        // hard coded -- this value only works with scale 0.7
+        const extra = 595;
+        // -1 because it needs to go higher
+        const trans_y = (this.y_block_iso + extra) * dif_levels * -1;
         return trans_y;
-      }
+    }
 
-      checkLevel(source, target) {
+    checkLevel(source, target) {
         const level_t = this.options.filter((e) => e.name === target);
         const level_s = this.options.filter((e) => e.name === source);
         return {"source": level_s[0].level, "target": level_t[0].level}
-      }
+    }
 
-      toIso() {
+    toIso() {
         this.iso = true;
-        this.iso_trans = 10;
-        const newSize = this.size_h / 1.5;
-        const iso_ratio = 0.7;
-        const scale = `scale(${this.scaleIsoX}, ${this.scaleIsoX * iso_ratio})`;
-        
-        this.plotFloors
-            .attr("transform", (d) => 
-                `translate(200, ${this.y_iso * (d[1][0].floor_n - 2.2)}) ${scale}`);
-      }
+        const scale = `scale(
+            ${this.scaleIsoX},
+            ${this.scaleIsoX * this.iso_ratio}
+        )`;
 
-      revertIso() {
+        this.plotFloors
+            .attr("transform", (d, i) => 
+                `translate(200,
+                ${this.y_block_iso * (d[1][0].floor_n - 2) * -1})
+                ${scale}`
+            );
+    }
+
+    revertIso() {
         this.plotFloors
             .attr("transform", `translate(0, 0) scale(1, 1) rotate(0)`)
-      }
+    }
 
-      checkHide() {
+    checkHide() {
         if(this.hideChange){
-            this.plotFloors.selectAll(".link_change").style("display", "none");
-            this.plotFloors.selectAll(".movements_up").style("display", "none");
-            this.plotFloors.selectAll(".movements_down").style("display", "none");
+            this.plotFloors
+                .selectAll(".link_change")
+                .style("display", "none");
+            this.plotFloors
+                .selectAll(".movements_up")
+                .style("display", "none");
+            this.plotFloors
+                .selectAll(".movements_down")
+                .style("display", "none");
         } else {
-            this.plotFloors.selectAll(".link_change").style("display", "inherit");
-            this.plotFloors.selectAll(".movements_up").style("display", "inherit");
-            this.plotFloors.selectAll(".movements_down").style("display", "inherit");
+            this.plotFloors
+                .selectAll(".link_change")
+                .style("display", "inherit");
+            this.plotFloors
+                .selectAll(".movements_up")
+                .style("display", "inherit");
+            this.plotFloors
+                .selectAll(".movements_down")
+                .style("display", "inherit");
         }
-      }
+    }
 
-      updateVisual(type, value) {
+    updateVisual(type, value) {
         let prev;
 
         if (type === "checkbox") {
