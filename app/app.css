@@ -144,7 +144,7 @@ nav a {
 }
 
 /* bar chart */
-#section-bar .visual {
+#section-bar .visual, #section-network .visual {
     display: flex;
     flex-direction: row;
     justify-content: space-between;

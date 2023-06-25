@@ -33,7 +33,7 @@ class networkClass {
       }
 
     init() {
-        this.margin = {t: 150, l: 16, r: 16, b: 150};
+        this.margin = {t: 0, l: 16, r: 16, b: 0};
         this.w = 
             document.getElementById(this.id).clientWidth - 
             this. margin.r - 
@@ -71,9 +71,13 @@ class networkClass {
         if (this.selectPlot.selectAll("svg").empty()) {
             this.plot = this.selectPlot
                 .append("svg")
-                .attr("viewBox", [0, 0, this.w, this.h]);
-            
-                console.log(this.options)
+                .attr("viewBox", [
+                    0,
+                    0,
+                    this.w + this.margin.l + this.margin.r,
+                    this.h + this.margin.t + this.margin.b
+                ]);
+
             // Build Arrows ====
             this.plot
                 .append("defs")
@@ -92,7 +96,6 @@ class networkClass {
                 .append("path")
                 .attr("d", "M0,-5L10,0L0,5");
 
-           
             this.plot_nodes = this.plot.append("g").attr("class", "nodes");
             this.plot_links = this.plot.append("g").attr("class", "links");
             this.plot_labels = this.plot.append("g").attr("class", "labels");
@@ -100,7 +103,6 @@ class networkClass {
         } else {
             this.plot = this.selectPlot.select("svg");
         }
-
     }
 
     drawNetwork(links, nodes, callSimulation) {
@@ -130,8 +132,6 @@ class networkClass {
                 }
             })
             .style("stroke-width", (d) => this.scaleStroke(d.n_total))
-            .style("mix-blend-mode", "multiply")
-            .style("fill", "none")
 
         this.drawNodes = this.plot_nodes
             .selectAll(".node")
@@ -271,4 +271,5 @@ class networkClass {
         this.drawNetwork(filtered_links, filtered_nodes, false);
 
     }
+
 }

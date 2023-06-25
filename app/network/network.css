@@ -1,6 +1,15 @@
-#network svg, #network {
-    width: 100%;
+#network {
+    width: 74%;
     height: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#network svg {
+    margin-top: 2em;
+    width: 100%;
+    height: auto;
 }
 
 .labels_floors {
@@ -10,10 +19,21 @@
     font-weight: 700;
 }
 
-.node_highlight {
+#network .node_highlight {
     filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.4));
 }
 
-.links {
+#network .links {
     pointer-events: none;
 }
+
+#network .link {
+    fill: none;
+    mix-blend-mode: multiply;
+}
+
+@-moz-document url-prefix() {
+    #network .link {
+        mix-blend-mode: inherit;
+    }
+  }
