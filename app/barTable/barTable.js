@@ -14,6 +14,8 @@ class barTableClass {
         this.div_id = item.div_id;
         this.selected_level = "All";
         this.hideNaN = false;
+
+        console.log(this.links)
     }
     
     async execute() {
