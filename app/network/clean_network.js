@@ -32,14 +32,14 @@ const clean_network = {
             );
             const bouncer_s = clean_network.bouncer(d.mRoom_source);
             const bouncer_t = clean_network.bouncer(d.mRoom_target);
-            const isNaN = !bouncer_s || !bouncer_t ? false : true;
-    
+            const roomIsNaN = bouncer_s || bouncer_t ? true : false;
+
             // give a new id for the network layout
             d.source = map_rooms.indexOf(d.id_source);
             d.target = map_rooms.indexOf(d.id_target);
             d.change_floor = d.main_floor !== d.main_floor_target ?
                 true : false;
-            d.isNaN = isNaN;
+            d.isNaN = roomIsNaN;
         });
 
         return all_links;

@@ -115,11 +115,34 @@ class checkbox {
             .attr("type", "checkbox")
             .attr("name", `${this.type}_toggleSwitch`);
 
+        const info = [
+            "Wifi-access points that cannot get matched with a room in the",
+            "museum but appear in the data"
+        ];
+
         const label = this.toggles
             .append("span")
-            .text(this.type === "blueprint" ?
-                "Hide change of floors" : 
-                "Hide unknown rooms"
-            );
+            .text("Hide unknown rooms")
+            .append("button")
+            .attr("type", "button")
+            .attr("class", "btn btn-info")
+            .attr("data-bs-toggle", "tooltip")
+            .attr("data-bs-placement", "top")
+            .attr("data-bs-title", `${info[0]} ${info[1]}`)
+            .text("i");
+        
+        this.tooltip();
+//  data-bs-title="Tooltip on top">
+//   Tooltip on top
+// </button>
+
+    }
+
+    tooltip() {
+        // from https://getbootstrap.com/docs/5.3/components/tooltips/#overview
+        const tooltipTriggerList = document
+            .querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = [...tooltipTriggerList]
+            .map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
     }
 }

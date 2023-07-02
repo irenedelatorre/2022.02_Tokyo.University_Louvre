@@ -132,3 +132,15 @@ span.dot {
     padding: 0;
     border: 1px solid rgba(0, 0, 0, 0.2);
 }
+
+/* tooltip info */
+
+.btn-info {
+    width: 2em;
+    height: 2em;
+    font-size: 0.875em !important;
+    line-height: 100%;
+    margin-left: 0.5em;
+    border-radius: 2em !important;
+    background-color: var(--ui_dark);
+}
