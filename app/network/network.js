@@ -65,6 +65,8 @@ class networkClass {
                     return +(a + t * c).toFixed(1);
                 };
             });
+
+        this.tooltip = d3.select(`#${this.id}-tooltip`);
     }
 
     createSVG() {
@@ -137,6 +139,7 @@ class networkClass {
             .selectAll(".node")
             .data(nodes)
             .join("circle")
+            // .attr("id", d => `node_${d.museum_room}`)
             .attr("class", d =>
                 d.highlight !== "" ?
                 "node node_highlight" :
@@ -151,7 +154,12 @@ class networkClass {
                 "#000"
             )
             .style("stroke-opacity", d => d.highlight !== "" ? 1 : 0.2)
-            .on("mouseover", d => console.log(d));
+            .on("mouseover", (d, i) => {
+                // I don't know why -i- is the data instead of d (which brings
+                // the information regarding the SVG element)
+                this.mouseOver(i, d);
+                
+            });
 
         this.drawLabels = this.plot_labels
             .selectAll(".labels_floors")
@@ -272,4 +280,19 @@ class networkClass {
 
     }
 
+    mouseOver(d, shape) {
+        console.log(d, shape);
+
+        this.tooltip
+            .select(".room")
+            .html(d.museum_room);
+
+        this.tooltip
+            .select(".highlight")
+            .html(d.highlight === "" ? "-" : d.highlight);
+        
+        this.tooltip
+            .select(".time")
+            .html(d.median);
+    }
 }
