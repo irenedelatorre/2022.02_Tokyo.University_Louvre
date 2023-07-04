@@ -144,3 +144,19 @@ span.dot {
     border-radius: 2em !important;
     background-color: var(--ui_dark);
 }
+
+/* legend */
+
+.controls .legend {
+    border-bottom: 1px solid #F2F2F2;
+    padding-bottom: 1em;
+}
+
+.controls .legend .item {
+    align-items: flex-start;
+    gap: 0.5em;
+}
+
+.legend .item .hand {
+    padding-top: 0.25em;
+}
