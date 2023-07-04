@@ -6,7 +6,8 @@
     --ui: #10A3AB;
     --ui-light: #E7F6F7;
     --ui-light-2: #f7feff;
-    --ui_dark: #10858C;
+    --ui-dark: #10858C;
+    --ui-dark-2: #0e636b;
 
     --font-text: 'Noto Sans', sans-serif;
     --font-text-serif: 'Noto Serif', serif;
@@ -141,7 +142,7 @@ nav {
 }
 
 nav a {
-    color: var(--ui_dark);
+    color: var(--ui-dark-2);
     font-weight: 700;
     font-size: 0.875em;
     letter-spacing: 0.1em;
@@ -230,6 +231,12 @@ footer h2 {
     font-style: italic;
 }
 
+.authors .university {
+    letter-spacing: 0;
+    text-transform: inherit;
+    font-weight: normal;
+}
+
 /* btn */
 .section#end {
     display: flex;
@@ -238,7 +245,7 @@ footer h2 {
 
 .section .btn {
     color: var(--white);
-    background-color: var(--ui);
+    background-color: var(--ui-dark);
     border: 0;
     border-radius: 2px;
     font-size: 1em;

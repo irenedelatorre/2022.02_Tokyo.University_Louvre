@@ -97,7 +97,7 @@ class checkbox {
         this.checkbox = this.checkboxes
             .append("input")
             .attr("type", "radio")
-            .attr("id", d => `${this.type}_${d.level}`)
+            .attr("id", d => `${this.type}_${d.level}_${this.id}`)
             .attr("name", this.type)
             .attr("value", d => d.name)
             .attr("aria-checked", d => d.level === "All" ? true : false)

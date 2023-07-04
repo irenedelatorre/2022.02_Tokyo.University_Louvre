@@ -41,7 +41,7 @@
                 <h2>
                     Explore visitor’s trajectories using the Louvre's blueprint
                 </h2>
-                <div class="legend legend-blueprint">
+                <div class="legend legend-blueprint" aria-hidden="true">
                     <div class="item item-1">
                         <svg width="23" height="11" viewBox="0 0 23 11" 
                         fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -75,6 +75,7 @@
                                 <button
                                     class="accordion-button"
                                     type="button"
+                                    role="button"
                                     value="3d"
                                     data-bs-toggle="collapse"
                                     data-bs-target="#collapse3D"
@@ -105,6 +106,7 @@
                             <button
                                 class="accordion-button collapsed"
                                 type="button"
+                                role="button"
                                 value="top"
                                 data-bs-toggle="collapse"
                                 data-bs-target="#collapseTop"
@@ -142,7 +144,7 @@
                     complex network. Each node represents a room, each 
                     edge express a pedestrian flow.
                 </p>
-                <div class="legend legend-network">
+                <div class="legend legend-network" aria-hidden="true">
                     <div class="item item-1">
                         <svg width="38" height="24" viewBox="0 0 38 24" 
                             fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -202,7 +204,7 @@
                 <div class="non-sticky">
                     <div class="controls-wrapper">
                         <div class="controls">
-                            <div class="legend">
+                            <div class="legend" aria-hidden="true">
                                 <div class="item mouse">
                                     <img class="hand" src="assets/img/hand.svg">
                                     <p>
@@ -293,23 +295,34 @@
     <footer>
         <div class="container">
             <div class="col-md-1">
-                <a href="https://urbansciences.jp" target="_blank">
-                    <img class="logo_usl" src="assets/img/usl_logo.svg">
+                <a href="https://urbansciences.jp" target="_blank" aria-label="Go to Urban Sciences website">
+                    <img class="logo_usl" src="assets/img/usl_logo.svg" aria-hidden="true">
                 </a>
             </div>
             <div class="col-md-10 authors">
                 <h2>Team</h2>
                 <p class="author">Yuji Yoshimura <span class="position">Principal Investigator</span></p>
-                <p class="author">Daniel Kondor <span class="position">Researcher</span></p>
+                <p class="author">
+                    Daniel Kondor 
+                    <span class="position">External Researcher, </span>
+                    <a href="https://www.csh.ac.at/"
+                        target="_blank"
+                        class ="university">
+                        Complexity Science Hub Vienna
+                    </a>
+                </p>
                 <p class="author">Irene de la Torre Arenas <span class="position">Visualization</span></p>
-                <p class="author">Yamauchi Mizuki <span class="position">????</span></p>
+                <p class="author">
+                    Mizuki Yamauchi
+                    <span class="position">Researcher</span>
+                </p>
                 </br>
                 <a class="lab" href="https://urbansciences.jp" target="_blank">
                     Urban Sciences Lab
                 </a>
                 </br>
-                <a href="https://urbansciences.jp" target="_blank">
-                    <img class="logo_uni" src="assets/img/UnivOfTokyo_logo.svg">
+                <a href="https://urbansciences.jp" target="_blank" aria-label="Go to University of Tokyo Website">
+                    <img class="logo_uni" src="assets/img/UnivOfTokyo_logo.svg" aria-hidden="true">
                 </a>
             </div>
         </div>
