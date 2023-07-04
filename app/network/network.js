@@ -67,6 +67,9 @@ class networkClass {
             });
 
         this.tooltip = d3.select(`#${this.id}-tooltip`);
+        this.tooltip_w = document.getElementById(`${this.id}-tooltip`)
+            .clientWidth;
+        this.tooltip.classed("tooltip-hide", true);
     }
 
     createSVG() {
@@ -159,6 +162,15 @@ class networkClass {
                 // the information regarding the SVG element)
                 this.mouseOver(i, d);
                 
+            })
+            .on("mousemove", (d, i) => {
+                // I don't know why -i- is the data instead of d (which brings
+                // the information regarding the SVG element)
+                this.mouseOver(i, d);
+                
+            })
+            .on("mouseleave", (d, i) => {
+                this.mouseLeave(i, d);
             });
 
         this.drawLabels = this.plot_labels
@@ -281,7 +293,10 @@ class networkClass {
     }
 
     mouseOver(d, shape) {
-        console.log(d, shape);
+
+        shape.target.classList.add("mousedOver");
+
+        console.log(shape.target.classList, d3.select(shape))
 
         this.tooltip
             .select(".room")
@@ -294,5 +309,23 @@ class networkClass {
         this.tooltip
             .select(".time")
             .html(d.median);
+
+        const x = Math.round(shape.originalTarget.getAttribute('cx') * 10) / 10;
+        const y = Math.round(shape.originalTarget.getAttribute('cy') * 10) / 10;
+        const r = Math.round(shape.originalTarget.getAttribute('r') * 10) / 10;
+
+        const tooltip_h = document.getElementById(`${this.id}-tooltip`)
+            .clientHeight;
+
+        this.tooltip
+            .style("left", `${x - this.tooltip_w / 2}px`)
+            .style("top", `${y - 20 - tooltip_h}px`);
+
+        this.tooltip.classed("tooltip-hide", false);
+    }
+
+    mouseLeave(d, shape) {
+        shape.target.classList.remove("mousedOver");
+        this.tooltip.classed("tooltip-hide", true);
     }
 }
