@@ -49,7 +49,7 @@ class networkClass {
         this.scaleStroke = d3
             .scaleLinear()
             .domain([1000, d3.max(this.links, (d) => d.n_total)])
-            .range([0.05, 5])
+            .range([0.1, 10])
             .clamp(true)
             .interpolate(function (a, b) {
                 const c = b - a;
