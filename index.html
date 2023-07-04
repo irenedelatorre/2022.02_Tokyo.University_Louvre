@@ -186,10 +186,31 @@
                 </div>
             </div>
             <div class="visual">
-                <div id="network" class="plot"></div>
+                <div id="network" class="plot">
+                    <div class="tooltip-info" id="network-tooltip">
+                        <p>Rooms: <span class="room"></span></p>
+                        <p>Highlight: <span class="highlight"></span></p>
+                        <p>Median visit duration: 
+                            <span class="time"></span>
+                            minutes
+                        </p>
+                        <div class="tooltip-end">
+                            <div class="arrow"></div>
+                        </div>
+                    </div>
+                </div>
                 <div class="non-sticky">
                     <div class="controls-wrapper">
                         <div class="controls">
+                            <div class="legend">
+                                <div class="item mouse">
+                                    <img class="hand" src="assets/img/hand.svg">
+                                    <p>
+                                        Mouse over the circles to get 
+                                        information about the museum rooms
+                                    </p>
+                                </div>
+                            </div>
                             <label>Highlight source rooms</label>
                             <form id="network-controls"></form>
                         </div>

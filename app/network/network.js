@@ -65,6 +65,11 @@ class networkClass {
                     return +(a + t * c).toFixed(1);
                 };
             });
+
+        this.tooltip = d3.select(`#${this.id}-tooltip`);
+        this.tooltip_w = document.getElementById(`${this.id}-tooltip`)
+            .clientWidth;
+        this.tooltip.classed("tooltip-hide", true);
     }
 
     createSVG() {
@@ -137,6 +142,7 @@ class networkClass {
             .selectAll(".node")
             .data(nodes)
             .join("circle")
+            // .attr("id", d => `node_${d.museum_room}`)
             .attr("class", d =>
                 d.highlight !== "" ?
                 "node node_highlight" :
@@ -151,7 +157,21 @@ class networkClass {
                 "#000"
             )
             .style("stroke-opacity", d => d.highlight !== "" ? 1 : 0.2)
-            .on("mouseover", d => console.log(d));
+            .on("mouseover", (d, i) => {
+                // I don't know why -i- is the data instead of d (which brings
+                // the information regarding the SVG element)
+                this.mouseOver(i, d);
+                
+            })
+            .on("mousemove", (d, i) => {
+                // I don't know why -i- is the data instead of d (which brings
+                // the information regarding the SVG element)
+                this.mouseOver(i, d);
+                
+            })
+            .on("mouseleave", (d, i) => {
+                this.mouseLeave(i, d);
+            });
 
         this.drawLabels = this.plot_labels
             .selectAll(".labels_floors")
@@ -272,4 +292,40 @@ class networkClass {
 
     }
 
+    mouseOver(d, shape) {
+
+        shape.target.classList.add("mousedOver");
+
+        console.log(shape.target.classList, d3.select(shape))
+
+        this.tooltip
+            .select(".room")
+            .html(d.museum_room);
+
+        this.tooltip
+            .select(".highlight")
+            .html(d.highlight === "" ? "-" : d.highlight);
+        
+        this.tooltip
+            .select(".time")
+            .html(d.median);
+
+        const x = Math.round(shape.originalTarget.getAttribute('cx') * 10) / 10;
+        const y = Math.round(shape.originalTarget.getAttribute('cy') * 10) / 10;
+        const r = Math.round(shape.originalTarget.getAttribute('r') * 10) / 10;
+
+        const tooltip_h = document.getElementById(`${this.id}-tooltip`)
+            .clientHeight;
+
+        this.tooltip
+            .style("left", `${x - this.tooltip_w / 2}px`)
+            .style("top", `${y - 20 - tooltip_h}px`);
+
+        this.tooltip.classed("tooltip-hide", false);
+    }
+
+    mouseLeave(d, shape) {
+        shape.target.classList.remove("mousedOver");
+        this.tooltip.classed("tooltip-hide", true);
+    }
 }
