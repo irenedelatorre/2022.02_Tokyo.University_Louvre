@@ -1,14 +1,17 @@
 // load data
 Promise.all([
-    d3.csv('./assets/data/f9_ap_rooms.csv', parse.parseF9_ap_rooms),
+    d3.csv("./assets/data/f9_ap_rooms.csv", parse.parseF9_ap_rooms),
 
     // NETWORK
-    d3.csv('./assets/data/network_nodes_agg_all.csv', parse.parseNodesNW),
-    d3.csv('./assets/data/network_agg_all.csv', parse.parseLinksNW),
+    d3.csv("./assets/data/network_nodes_agg_all.csv", parse.parseNodesNW),
+    d3.csv("./assets/data/network_agg_all.csv", parse.parseLinksNW),
 
     // BLUEPRINT
-    d3.csv('./assets/data/geometry/geometry.csv', parse.parseGeometry),
-    d3.csv('./assets/data/geometry/rooms.csv', parse.parseGeomRooms)
+    d3.csv("./assets/data/geometry/geometry.csv", parse.parseGeometry),
+    d3.csv("./assets/data/geometry/rooms.csv", parse.parseGeomRooms),
+
+    // CONTENT
+    d3.csv("./assets./data/metadata-content.csv", parse.metadataContent)
 ])
 .then(function(files) {
     const metadata_wifi = files[0];
@@ -16,8 +19,9 @@ Promise.all([
     const all_links = files[2];
     const geometry = files[3];
     const blueprint_rooms = files[4];
+    const metadata_content = files[5];
 
-    console.log(geometry)
+    console.log(metadata_content)
 
     //// NETWORK DATA ////
     const all_floors = d3.groupSort(
@@ -93,7 +97,7 @@ Promise.all([
     // 2 CREATE NETWORK ---
     // Define an async IIFE (Immediately Invoked Function Expression) 
     // to call the classes sequentially
-    const blueprint_container = document.querySelector('#blueprint');
+    const blueprint_container = document.querySelector("#blueprint");
     (async () => {
         const network = await new networkClass({
             nodes: nodes,
@@ -102,7 +106,8 @@ Promise.all([
             scaleColor: scaleColor,
             core_colors: core_colors,
             id: "network",
-            options: colors_floors
+            options: colors_floors,
+            metadata: metadata_content.filter(d => d.chart === "network")[0]
         }).execute();
 
         // visitors by trajectory
@@ -131,7 +136,8 @@ Promise.all([
             // floors: all_floors,
             options: colors_floors,
             size_w: 1552,
-            size_h: 793
+            size_h: 793,
+            metadata: metadata_content.filter(d => d.chart === "blueprint")[0]
         }).execute();
 
         // new p5(blueprint);

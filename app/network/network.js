@@ -3,6 +3,7 @@ class networkClass {
         this.nodes = item.nodes.map((d) => Object.create(d));
         this.links = item.links.map((d) => Object.create(d));
         this.floors = item.floors;
+        this.metadata = item.metadata;
         this.id = item.id;
         this.selectPlot = d3.select(`#${this.id}`);
         this.selected_level = "All";
@@ -12,6 +13,8 @@ class networkClass {
         this.hideNaN = false;
         this.r = 5;
         this.padding = 25;
+
+        console.log(this.metadata, "meta")
 
     }
 
@@ -81,7 +84,8 @@ class networkClass {
                     0,
                     this.w + this.margin.l + this.margin.r,
                     this.h + this.margin.t + this.margin.b
-                ]);
+                ])
+                .attr("title", this.metadata.text);
 
             // Build Arrows ====
             this.plot

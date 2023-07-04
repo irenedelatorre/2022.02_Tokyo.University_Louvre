@@ -4,6 +4,7 @@ class blueprintClass {
         this.floors = d3.groups(this.geometry, (d) => d.floor);
         this.rooms = item.rooms;
         this.links = item.links;
+        this.metadata = item.metadata;
         this.id = item.id;
         this.selectPlot = d3.select(`#${this.id}`);
         this.size_w = item.size_w;
@@ -72,7 +73,9 @@ class blueprintClass {
 
     createSVG() {
         if (this.selectPlot.selectAll("svg").empty()) {
-            this.plot = this.selectPlot.append("svg");
+            this.plot = this.selectPlot
+                .append("svg")
+                .attr("title", this.metadata.text);
         } else {
             this.plot = this.selectPlot.select("svg");
         }

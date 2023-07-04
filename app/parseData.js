@@ -217,5 +217,12 @@ const parse = {
           }
 
         return value;
+    },
+
+    metadataContent: function(d){
+        return {
+            chart: d.chart,
+            text: d.text
+        }
     }
 }
