@@ -8,14 +8,24 @@ class checkbox {
         this.select = d3.select(`#${this.id}`);
 
         this.createCheckbox();
+        const container = this;
+
         // send information to visual
         this.checkbox.on("change", function() {
             let view_3d = "";
 
-            if(item.id === "blueprint-controls-3d") {
+            if (item.id === "blueprint-controls-3d") {
                 view_3d = "iso";
             }
-                item.module.updateVisual("checkbox", this.value, view_3d);
+
+            item.module.updateVisual("checkbox", this.value, view_3d);
+
+            container.checkbox
+                .attr("aria-checked", d => 
+                    d.name === this.value ?
+                    true : 
+                    false
+                );
         });
 
         if (this.type !== "blueprint") {
@@ -27,6 +37,8 @@ class checkbox {
                 } else {
                     item.module.updateVisual("toggle", false)
                 }
+
+                container.toggle.attr("aria-checked", isChecked);
             })
         } else {
             d3.selectAll(".accordion-button")
@@ -85,9 +97,10 @@ class checkbox {
         this.checkbox = this.checkboxes
             .append("input")
             .attr("type", "radio")
-            .attr("id", d => `${this.type}_${d.level}`)
+            .attr("id", d => `${this.type}_${d.level}_${this.id}`)
             .attr("name", this.type)
             .attr("value", d => d.name)
+            .attr("aria-checked", d => d.level === "All" ? true : false)
             .property("checked", (d) => {
                 return d.level === "All";
             });
@@ -95,7 +108,6 @@ class checkbox {
         this.checkboxes
             .append("span")
             .attr("class", d => `dot level_${d.level}`)
-            // .text("\u26AB")
             .style("background-color", d => this.scaleColor(d.name));
         this.checkboxes
             .append("span")
@@ -113,7 +125,8 @@ class checkbox {
         this.toggle = this.toggles
             .append("input")
             .attr("type", "checkbox")
-            .attr("name", `${this.type}_toggleSwitch`);
+            .attr("name", `${this.type}_toggleSwitch`)
+            .attr("aria-checked", false);
 
         const info = [
             "Wifi-access points that cannot get matched with a room in the",
@@ -132,10 +145,6 @@ class checkbox {
             .text("i");
         
         this.tooltip();
-//  data-bs-title="Tooltip on top">
-//   Tooltip on top
-// </button>
-
     }
 
     tooltip() {

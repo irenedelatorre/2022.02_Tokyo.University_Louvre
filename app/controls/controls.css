@@ -55,9 +55,12 @@
     border-radius: 2px;
     background-color: var(--ui-light-2);
     font-weight: bold;
-    color: var(--ui_dark);
+    color: var(--ui-dark-2);
 }
 
+.accordion-button:hover, .accordion-button:not(.collapsed):hover {
+    color: var(--black);
+}
 .accordion-item:first-of-type .accordion-button,
 .accordion-item:last-of-type .accordion-button {
     border-bottom: 1px solid var(--ui);
@@ -68,7 +71,7 @@
 }
 
 .accordion-button:not(.collapsed) {
-    color: var(--ui_dark);
+    color: var(--ui-dark-2);
     background-color: var(--ui-light);
     box-shadow: none;
 }
@@ -142,7 +145,7 @@ span.dot {
     line-height: 100%;
     margin-left: 0.5em;
     border-radius: 2em !important;
-    background-color: var(--ui_dark);
+    background-color: var(--ui-dark);
 }
 
 /* legend */
