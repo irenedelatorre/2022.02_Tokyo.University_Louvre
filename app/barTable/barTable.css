@@ -56,8 +56,13 @@ thead {
 }
 
 .visitors-bar {
-    border-left: 1px solid var(--grey-subtle);
+    border-left: 1px solid var(--black);
     padding-left: 0 !important;
+}
+
+.visitors-bar .svg {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-left: 0;
 }
 
 #t-NumberofVisitors {

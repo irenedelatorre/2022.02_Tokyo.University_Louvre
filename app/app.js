@@ -122,7 +122,7 @@ Promise.all([
             options: colors_floors,
             headers: ["Index", "Rooms", "Number of Visitors", "Number"],
             barIndex: 3,
-            rowHeight: 24,
+            rowHeight: 20,
         }).execute();
 
         //blueprints

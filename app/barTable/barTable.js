@@ -7,7 +7,7 @@ class barTableClass {
         this.id = item.id;
         this.bar_head = item.bar_head;
         this.format = d3.format(",.2r");
-        this.margin = {t: 2, b: 2};
+        this.margin = {t: 3, b: 3};
         this.headers = item.headers;
         this.barIndex = item.barIndex;
         this.rowHeight = item.rowHeight;

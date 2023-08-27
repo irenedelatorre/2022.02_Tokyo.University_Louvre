@@ -122,8 +122,8 @@ form label span.label_name {
 
 /* // colors */
 form input[type="radio"], form input[type="checkbox"] {
-    accent-color: var(--ui);
-    background-color: var(--ui);
+    accent-color: var(--black);
+    background-color: var(--black);
 } 
 
 span.dot {
