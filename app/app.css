@@ -197,6 +197,10 @@ footer a {
     font-weight: 700;
 }
 
+footer a:hover {
+    opacity: 0.8;
+}
+
 footer .lab {
     margin: 1.5em 0 2em;
 }
@@ -263,4 +267,8 @@ footer h2 {
     border-radius: 2px;
     font-size: 1em;
     font-weight: bold;
+}
+
+.section .btn:hover {
+    color: rgba(255, 255, 255, 0.8);
 }

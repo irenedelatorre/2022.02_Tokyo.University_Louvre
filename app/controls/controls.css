@@ -98,7 +98,7 @@ label.levels {
     padding-left: 1.75em;
 }
 
-label.toggleSwitch {
+label.toggleSwitch, label.toggleHeight {
     border-top: 1px solid #F2F2F2;
     padding-top: 1em;
 }
@@ -112,7 +112,8 @@ form label input {
     margin-top: 0.05em !important;
 }
 
-form label.toggleSwitch span {
+form label.toggleSwitch span,
+form label.toggleHeight span {
     padding: 0 0 0 1.7em;
 }
 
@@ -162,4 +163,8 @@ span.dot {
 
 .legend .item .hand {
     padding-top: 0.25em;
+}
+
+.toggleHeight {
+    width: 100%;
 }
