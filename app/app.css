@@ -31,18 +31,25 @@ h1, h2, h3, h4, h5, h6, p, ul {
 h1 {
     color: var(--black);
     font-family: var(--font-text-serif);
-    font-weight: 700;
+    font-weight: 600;
+    font-style: italic;
     font-size: 3.5em;
     line-height: 1.16em;
     margin-top: 1rem;
-    margin-bottom: 4rem;
+    margin-bottom: 1.625rem;
 }
 
 h2 {
+    font-family: var(--font-text-serif);
     font-size: 1.375em;
     line-height: 1.5em;
     margin-bottom: 0;
-    font-weight: 700;
+    font-weight: 500;
+    text-align: left;
+}
+
+.italic {
+    font-style: italic;
 }
 
 ul {
@@ -63,13 +70,15 @@ header {
     font-weight: 700;
     font-size: 1em;
     line-height: 1.25em;
+    margin-bottom: 3rem;
 }
 
 .standfirst {
-    font-size: 1.25em;
+    font-size: 1em;
     line-height: 1.5em;
     text-align: left;
-    color: var(--grey);
+    color: var(--black);
+    margin-bottom: 0;
 }
 
 /* body */
@@ -99,7 +108,7 @@ header {
     flex-direction: row;
     align-items: center;
     padding: 2px 0px;
-    gap: 0;
+    gap: 0.25rem 0.5rem;
     max-width: 680px;
     width: 100%;
     margin: 0 auto 1em auto;
@@ -133,7 +142,7 @@ header {
 
 /* NAV */
 nav {
-    background-color: var(--ui-light);
+    background-color: var(--black);
     padding: 0.5625em 2em;
     display: flex;
     flex-direction: row;
@@ -142,8 +151,9 @@ nav {
 }
 
 nav a {
-    color: var(--ui-dark-2);
-    font-weight: 700;
+    color: var(--ui-light);
+    font-weight: 600;
+    line-height: 100%;
     font-size: 0.875em;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -151,7 +161,7 @@ nav a {
 }
 
 nav a:hover {
-    color: var(--black);
+    opacity: 0.8;
 }
 
 /* visuals */
@@ -166,7 +176,10 @@ nav a:hover {
 
 /* considerations */
 #section-considerations {
-    color: var(--grey);
+    /* color: var(--grey); */
+    gap: 0.5em;
+    display: flex;
+    flex-direction: column;
 }
 
 /* footer */
@@ -245,7 +258,7 @@ footer h2 {
 
 .section .btn {
     color: var(--white);
-    background-color: var(--ui-dark);
+    background-color: var(--black);
     border: 0;
     border-radius: 2px;
     font-size: 1em;
