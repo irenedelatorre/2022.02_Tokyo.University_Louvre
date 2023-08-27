@@ -14,14 +14,16 @@ class barTableClass {
         this.div_id = item.div_id;
         this.selected_level = "All";
         this.hideNaN = false;
+        this.parentDiv = item.parentDiv;
+        this.collapsed = true;
 
-        console.log(this.links)
     }
     
     async execute() {
         // Code for the first class
         this.init();
         this.createTable(this.links);
+        this.controlHeight();
         // create the controls
         const checkbox_network = new checkbox({
             scaleColor: this.scaleColor,
@@ -151,6 +153,22 @@ class barTableClass {
         }
 
         this.createTable(filtered_links);
+    }
+
+    controlHeight() {
+        const parentDiv = this.parentDiv;
+        d3.select("#expandTable")
+            .on("click", function (d) {
+                const now = this.value;
+                const before = now !== "collapsed" ? "open" : "collapsed";
+                this.value = now === "collapsed" ? "open" : "collapsed";
+                d3.select(`.${parentDiv}`)
+                    .classed("collapsed", now === "collapsed" ? true : false);
+
+                d3.select(".t-shadow")
+                    .style("display", now === "collapsed" ? "inherit" : "none");
+                
+            })
     }
 
 }

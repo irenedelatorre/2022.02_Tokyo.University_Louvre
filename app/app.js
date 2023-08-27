@@ -116,11 +116,12 @@ Promise.all([
             floors: all_floors,
             scaleColor: scaleColor,
             core_colors: core_colors,
+            parentDiv: "the-table",
             id: "visitors-by-trajectory-table",
             bar_head: "bar_width",
             div_id: "table-divs",
             options: colors_floors,
-            headers: ["Index", "Rooms", "Number of Visitors", "Number"],
+            headers: ["Index", "Rooms", "Number of Visitors", ""],
             barIndex: 3,
             rowHeight: 20,
         }).execute();
