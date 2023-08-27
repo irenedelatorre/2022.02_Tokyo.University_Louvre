@@ -11,7 +11,7 @@ Promise.all([
     d3.csv("./assets/data/geometry/rooms.csv", parse.parseGeomRooms),
 
     // CONTENT
-    d3.csv("./assets./data/metadata-content.csv", parse.metadataContent)
+    d3.csv("./assets/data/metadata-content.csv", parse.metadataContent)
 ])
 .then(function(files) {
     const metadata_wifi = files[0];
